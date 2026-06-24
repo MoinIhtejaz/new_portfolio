@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-ink-950 text-slate-300 font-sans antialiased;
+  }
+
+  ::selection {
+    @apply bg-accent/30 text-white;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-ink-950;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-ink-600 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent/40;
+  }
+}
+
+@layer components {
+  .container-px {
+    @apply mx-auto w-full max-w-6xl px-6 sm:px-8;
+  }
+
+  .section-label {
+    @apply font-mono text-xs uppercase tracking-[0.25em] text-accent;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .card {
+    @apply rounded-2xl border border-white/[0.06] bg-ink-900/60 backdrop-blur-sm transition-all duration-300;
+  }
+  .card:hover {
+    @apply border-accent/30 bg-ink-800/60;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent-soft via-accent to-accent-glow bg-clip-text text-transparent;
+  }
+  .grid-bg {
+    background-image: linear-gradient(rgba(94, 234, 212, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94, 234, 212, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+/* ===========================================================================
+   Ambient background — drifting aurora light + film grain
+   =========================================================================== */
+.aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(110px);
+  will-change: transform, opacity;
+}
+
+.aurora-1 {
+  width: 48rem;
+  height: 48rem;
+  left: -14rem;
+  top: -16rem;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.45), transparent 68%);
+  animation: drift-1 26s ease-in-out infinite;
+}
+.aurora-2 {
+  width: 42rem;
+  height: 42rem;
+  right: -14rem;
+  top: 2rem;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.38), transparent 68%);
+  animation: drift-2 32s ease-in-out infinite;
+}
+.aurora-3 {
+  width: 40rem;
+  height: 40rem;
+  left: 18%;
+  bottom: -18rem;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.2), transparent 70%);
+  animation: drift-3 38s ease-in-out infinite;
+}
+.aurora-4 {
+  width: 34rem;
+  height: 34rem;
+  right: 12%;
+  bottom: 8rem;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.28), transparent 70%);
+  animation: drift-4 28s ease-in-out infinite;
+}
+
+@keyframes drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(8rem, 5rem) scale(1.12); }
+}
+@keyframes drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-7rem, 6rem) scale(1.08); }
+}
+@keyframes drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6rem, -5rem) scale(1.15); }
+}
+@keyframes drift-4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-5rem, -6rem) scale(1.1); }
+}
+
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-1, .aurora-2, .aurora-3, .aurora-4 {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
