@@ -19,7 +19,7 @@ export default function Contact() {
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-slate-400">
           I'm actively looking for quantitative and software engineering
-          internships. Whether it's trading research, infrastructure, or data —
+          internships. Whether it's trading research, infrastructure, or data,
           I'd love to talk.
         </p>
 

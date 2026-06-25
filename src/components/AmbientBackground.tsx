@@ -14,7 +14,7 @@ export default function AmbientBackground() {
       {/* faint grid */}
       <div className="absolute inset-0 grid-bg opacity-60" />
 
-      {/* drifting aurora — fades in on entry */}
+      {/* drifting aurora, fades in on entry */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
