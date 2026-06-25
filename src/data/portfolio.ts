@@ -1,6 +1,6 @@
 // ============================================================================
 //  SINGLE SOURCE OF TRUTH FOR ALL PORTFOLIO CONTENT
-//  Add new projects, experience, or skills here — the UI updates automatically.
+//  Add new projects, experience, or skills here; the UI updates automatically.
 // ============================================================================
 
 export const profile = {
@@ -16,7 +16,7 @@ export const profile = {
     linkedin: "https://linkedin.com/in/maheer",
   },
   summary:
-    "Advanced Computing (Honours) student at the University of Sydney, double majoring in Computational Data Science & Finance. I build quantitative models — volatility forecasting, portfolio optimisation, statistical pipelines — and ship full-stack software end to end. I'm drawn to problems where rigorous data-driven thinking meets real-world impact, especially in tech-driven trading.",
+    "Advanced Computing (Honours) student at the University of Sydney, double majoring in Computational Data Science & Finance. I build quantitative models (volatility forecasting, portfolio optimisation, statistical pipelines) and ship full-stack software end to end. I'm drawn to problems where rigorous data-driven thinking meets real-world impact, especially in tech-driven trading.",
   availability: "Graduating 2028 · Open to Summer 2026/27 internships",
 };
 
@@ -53,7 +53,7 @@ export const experience: Experience[] = [
     bullets: [
       "Extracted, cleaned, and joined marketing-campaign data with Python (Pandas) and built Seaborn visualisations that surfaced actionable insights and cut manual reporting effort.",
       "Developed forecasting models to identify budget-reallocation opportunities, lifting return on investment (ROI) across key channels.",
-      "Built and deployed a full-stack website (React, Node.js, Supabase) for product marketing and online sales, plus a shipment-tracking portal — hosted on the company domain.",
+      "Built and deployed a full-stack website (React, Node.js, Supabase) for product marketing and online sales, plus a shipment-tracking portal, hosted on the company domain.",
       "Gathered requirements directly from clients and translated technical data into plain-language, objective-driven recommendations.",
     ],
     tags: ["Python", "Pandas", "React", "Node.js", "Supabase", "Forecasting"],
@@ -80,7 +80,7 @@ export const projects: Project[] = [
     description:
       "An end-to-end research pipeline that forecasts realised volatility from raw Optiver order-book data and prices options off the predictions.",
     highlights: [
-      "Engineered features across 10 technology equities — realised volatility, log returns, bid–ask spread, weighted average price (WAP), and lagged volatility.",
+      "Engineered features across 10 technology equities: realised volatility, log returns, bid–ask spread, weighted average price (WAP), and lagged volatility.",
       "Fitted a HAR-RV model to capture the long-memory structure of volatility.",
       "Built an ARMA–GARCH model on log returns to forecast volatility for option-pricing applications.",
       "Trained an XGBoost regressor on engineered predictors, benchmarking against HAR-RV and ARMA–GARCH.",
@@ -111,7 +111,7 @@ export const projects: Project[] = [
     description:
       "A fully automated analysis pipeline that turns a raw CSV upload into clean data, statistical tests, charts, and human-readable insights.",
     highlights: [
-      "Built a pipeline from CSV upload to insight generation — cleaning data, running statistical tests, and generating charts with no manual steps.",
+      "Built a pipeline from CSV upload to insight generation: cleaning data, running statistical tests, and generating charts with no manual steps.",
       "Wrote custom Python (Pandas, SciPy) to handle outliers and missing values and run inferential tests including t-tests and Levene's test across grouped data.",
       "Integrated the GPT-4 API to translate raw statistical results into clear, human-readable summaries.",
       "Delivered the whole experience through an interactive Streamlit web app.",

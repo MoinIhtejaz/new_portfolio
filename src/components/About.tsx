@@ -31,8 +31,8 @@ export default function About() {
             I'm drawn to problems where{" "}
             <span className="text-slate-200">
               data-driven thinking translates directly into impact
-            </span>{" "}
-            — especially in tech-driven trading.
+            </span>
+            , especially in tech-driven trading.
           </p>
 
           <div className="flex flex-wrap gap-x-8 gap-y-3 pt-2 font-mono text-xs uppercase tracking-wider text-slate-500">

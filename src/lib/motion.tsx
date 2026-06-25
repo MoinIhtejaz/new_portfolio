@@ -37,7 +37,7 @@ export const container = (stagger = 0.1, delay = 0): Variants => ({
 });
 
 /* ----------------------------------------------------------------------------
-   <Reveal> — fade-up on scroll into view (fires once)
+   <Reveal>: fade-up on scroll into view (fires once)
 ---------------------------------------------------------------------------- */
 type RevealProps = HTMLMotionProps<"div"> & {
   children: ReactNode;
@@ -74,7 +74,7 @@ export function Reveal({ children, delay = 0, y = 32, ...rest }: RevealProps) {
 }
 
 /* ----------------------------------------------------------------------------
-   <Stagger> / <StaggerItem> — children animate in sequence on scroll
+   <Stagger> / <StaggerItem>: children animate in sequence on scroll
 ---------------------------------------------------------------------------- */
 type StaggerProps = HTMLMotionProps<"div"> & {
   children: ReactNode;
@@ -130,7 +130,7 @@ export function StaggerItem({
 }
 
 /* ----------------------------------------------------------------------------
-   <ScrollProgress> — thin gradient bar tracking page scroll
+   <ScrollProgress>: thin gradient bar tracking page scroll
 ---------------------------------------------------------------------------- */
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();

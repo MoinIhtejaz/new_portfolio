@@ -75,7 +75,7 @@
 }
 
 /* ===========================================================================
-   Ambient background — drifting aurora light + film grain
+   Ambient background: drifting aurora light + film grain
    =========================================================================== */
 .aurora {
   position: absolute;
