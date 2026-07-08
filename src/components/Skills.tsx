@@ -4,7 +4,7 @@ import { Reveal } from "../lib/motion";
 
 export default function Skills() {
   return (
-    <Section id="skills" index="05" label="// toolbox" title="Technical Skills">
+    <Section id="skills" label="// toolbox" title="Technical Skills">
       <div className="border-t border-white/[0.08]">
         {skills.map((group, i) => (
           <Reveal key={group.name} delay={i * 0.06}>

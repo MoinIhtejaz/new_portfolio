@@ -7,7 +7,6 @@ export default function ExperienceSection() {
   return (
     <Section
       id="experience"
-      index="03"
       label="// where_i_have_worked"
       title="Experience"
     >

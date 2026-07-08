@@ -1,5 +1,8 @@
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import Nav from "./components/Nav";
 import AmbientBackground from "./components/AmbientBackground";
+import TerminalIntro from "./components/TerminalIntro";
 import Hero from "./components/Hero";
 import Education from "./components/Education";
 import About from "./components/About";
@@ -10,20 +13,31 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
 export default function App() {
+  const [booted, setBooted] = useState(false);
+
   return (
     <div className="relative min-h-screen">
       <AmbientBackground />
-      <Nav />
-      <main>
-        <Hero />
-        <Education />
-        <About />
-        <ExperienceSection />
-        <Projects />
-        <Skills />
-        <Contact />
-      </main>
-      <Footer />
+
+      <AnimatePresence>
+        {!booted && <TerminalIntro onDone={() => setBooted(true)} />}
+      </AnimatePresence>
+
+      {booted && (
+        <>
+          <Nav />
+          <main>
+            <Hero />
+            <Education />
+            <About />
+            <ExperienceSection />
+            <Projects />
+            <Skills />
+            <Contact />
+          </main>
+          <Footer />
+        </>
+      )}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { Reveal } from "../lib/motion";
 
 export default function About() {
   return (
-    <Section id="about" index="02" label="// who_i_am" title="About">
+    <Section id="about" label="// who_i_am" title="About">
       <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[0.9fr_1.4fr]">
         <Reveal>
           <p className="text-pretty text-2xl font-light leading-snug tracking-tight text-white sm:text-3xl">
