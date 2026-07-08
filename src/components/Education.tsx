@@ -5,12 +5,7 @@ import { Reveal } from "../lib/motion";
 
 export default function Education() {
   return (
-    <Section
-      id="education"
-      index="01"
-      label="// background"
-      title="Education"
-    >
+    <Section id="education" label="// background" title="Education">
       <Reveal className="card p-6 sm:p-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-start gap-4">
@@ -33,15 +28,17 @@ export default function Education() {
           </span>
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-3 border-t border-white/[0.06] pt-6">
+        <div className="mt-6 space-y-3.5 border-t border-white/[0.06] pt-6">
           {education.honors.map((h) => (
-            <span
-              key={h}
-              className="inline-flex items-center gap-2 rounded-full border border-signal/30 bg-signal/5 px-3 py-1.5 text-xs text-signal"
-            >
-              <Award size={13} />
-              {h}
-            </span>
+            <div key={h} className="flex items-center gap-3">
+              <Award
+                size={16}
+                className="shrink-0 text-signal [filter:drop-shadow(0_0_8px_rgba(251,191,36,0.55))]"
+              />
+              <span className="text-base font-medium tracking-wide text-amber-200 [text-shadow:0_0_10px_rgba(251,191,36,0.6),0_0_28px_rgba(251,191,36,0.35),0_0_56px_rgba(251,191,36,0.18)]">
+                {h}
+              </span>
+            </div>
           ))}
         </div>
       </Reveal>

@@ -111,7 +111,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export default function Projects() {
   return (
-    <Section id="projects" index="04" label="// selected_work" title="Projects">
+    <Section id="projects" label="// selected_work" title="Projects">
       <Stagger className="grid gap-6 md:grid-cols-2" stagger={0.12}>
         {projects.map((p, i) => (
           <ProjectCard key={p.title} project={p} index={i} />
