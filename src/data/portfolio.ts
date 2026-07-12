@@ -37,7 +37,6 @@ export const stats = [
 
 export type Experience = {
   company: string;
-  role: string;
   location: string;
   period: string;
   bullets: string[];
@@ -47,7 +46,6 @@ export type Experience = {
 export const experience: Experience[] = [
   {
     company: "2A Marketing",
-    role: "Business Analyst Intern",
     location: "Sydney, NSW",
     period: "Mar 2023 – Dec 2023",
     bullets: [
@@ -68,6 +66,9 @@ export type Project = {
   highlights: string[];
   stack: string[];
   links?: { label: string; href: string }[];
+  // Media auto-detection: drop a file named `<mediaKey>.<ext>` into
+  // src/assets/media/ (e.g. volatility.mp4) and it appears automatically.
+  mediaKey: string;
 };
 
 export const projects: Project[] = [
@@ -84,6 +85,7 @@ export const projects: Project[] = [
       "Built a trading-engine application that uses the fitted and trained models to predict future volatility and drive an options-pricing engine.",
     ],
     stack: ["Python", "XGBoost", "ARMA–GARCH", "HAR-RV", "NumPy", "Pandas"],
+    mediaKey: "volatility",
   },
   {
     title: "Stock Portfolio Optimisation",
@@ -98,6 +100,7 @@ export const projects: Project[] = [
       "Built an interactive application around the optimiser, taking the quantitative model all the way to a usable, deployable tool.",
     ],
     stack: ["Python", "SciPy", "NumPy", "Monte Carlo", "Matplotlib"],
+    mediaKey: "optimiser",
   },
   {
     title: "End-to-End Automated Data Pipeline",
@@ -112,6 +115,7 @@ export const projects: Project[] = [
       "Delivered the whole experience through an interactive Streamlit web app.",
     ],
     stack: ["Python", "Pandas", "SciPy", "Streamlit", "GPT-4 API"],
+    mediaKey: "pipeline",
   },
   {
     title: "Efficient Email Filtering System",
@@ -125,6 +129,7 @@ export const projects: Project[] = [
       "Supported real-time ADD, CHECK, and SHOW operations.",
     ],
     stack: ["C++", "Bloom Filter", "Hashing", "CLI", "Data Structures"],
+    mediaKey: "bloom",
   },
 ];
 
