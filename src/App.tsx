@@ -6,6 +6,7 @@ import TerminalIntro from "./components/TerminalIntro";
 import Hero from "./components/Hero";
 import Education from "./components/Education";
 import About from "./components/About";
+import ExperienceSection from "./components/ExperienceSection";
 import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
@@ -29,6 +30,7 @@ export default function App() {
             <Hero />
             <Education />
             <About />
+            <ExperienceSection />
             <Projects />
             <Skills />
             <Contact />
