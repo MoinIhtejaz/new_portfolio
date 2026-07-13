@@ -124,7 +124,7 @@ export default function Hero() {
 
           <motion.h1
             variants={itemVariants}
-            className="text-balance text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-7xl"
+            className="text-balance font-display text-5xl font-bold leading-[1.02] tracking-tight text-white sm:text-7xl"
           >
             {profile.name}
           </motion.h1>
@@ -153,15 +153,14 @@ export default function Hero() {
           >
             <motion.a
               href="#projects"
-              whileHover={{ scale: 1.03 }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
-              className="group inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-ink-950 shadow-[0_0_30px_-6px_rgba(45,212,191,0.5)] transition-colors hover:bg-accent-soft"
+              className="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-accent py-2 pl-6 pr-2 text-sm font-semibold text-ink-950 shadow-[0_0_30px_-6px_rgba(45,212,191,0.5)] transition-colors hover:bg-accent-soft"
             >
               View Projects
-              <ArrowRight
-                size={16}
-                className="transition-transform group-hover:translate-x-1"
-              />
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink-950/15 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px group-hover:translate-x-0.5">
+                <ArrowRight size={15} />
+              </span>
             </motion.a>
             <motion.a
               href={profile.resumeUrl}

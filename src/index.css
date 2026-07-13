@@ -10,28 +10,34 @@
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
+    /* Hide scrollbar (Firefox) while keeping scroll functional */
+    scrollbar-width: none;
+    /* Hide scrollbar (IE / legacy Edge) */
+    -ms-overflow-style: none;
   }
 
   body {
     @apply bg-ink-950 text-slate-300 font-sans antialiased;
+    /* Guard against any element causing sideways scroll */
+    overflow-x: hidden;
   }
 
   ::selection {
     @apply bg-accent/30 text-white;
   }
 
-  /* Custom scrollbar */
+  /* Visible focus for keyboard users only */
+  :focus-visible {
+    outline: 2px solid rgba(94, 234, 212, 0.7);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Hide scrollbars (WebKit / Chrome / Safari) — scroll stays functional */
   ::-webkit-scrollbar {
-    width: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-ink-950;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-ink-600 rounded-full;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-accent/40;
+    width: 0;
+    height: 0;
+    display: none;
   }
 }
 
@@ -55,12 +61,6 @@
     transform: translateY(0);
   }
 
-  .card {
-    @apply rounded-2xl border border-white/[0.06] bg-ink-900/60 backdrop-blur-sm transition-all duration-300;
-  }
-  .card:hover {
-    @apply border-accent/30 bg-ink-800/60;
-  }
 }
 
 @layer utilities {

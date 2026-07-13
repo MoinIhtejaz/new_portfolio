@@ -43,7 +43,7 @@ export default function Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm text-slate-400 transition-colors hover:text-accent"
+              className="relative text-sm text-slate-400 transition-colors duration-300 after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white hover:after:scale-x-100"
             >
               {l.label}
             </a>
@@ -52,7 +52,7 @@ export default function Nav() {
             href="/Maheer_Ihtejaz_Moin_Resume.pdf"
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-accent/40 px-4 py-1.5 text-sm font-medium text-accent transition-all hover:bg-accent/10"
+            className="rounded-full border border-accent/40 px-4 py-1.5 text-sm font-medium text-accent transition-all duration-300 hover:bg-accent/10 active:scale-[0.98]"
           >
             Résumé
           </a>

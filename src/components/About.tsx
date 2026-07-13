@@ -6,8 +6,11 @@ export default function About() {
     <Section id="about" label="// who_i_am" title="About">
       <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[0.9fr_1.4fr]">
         <Reveal>
-          <p className="text-pretty text-2xl font-light leading-snug tracking-tight text-white sm:text-3xl">
-            I build <span className="text-gradient">quantitative models</span>{" "}
+          <p className="text-pretty font-display text-2xl font-medium leading-snug tracking-tight text-white sm:text-3xl">
+            I build{" "}
+            <span className="font-editorial font-normal italic text-gradient">
+              quantitative models
+            </span>{" "}
             and the software that puts them to work.
           </p>
         </Reveal>

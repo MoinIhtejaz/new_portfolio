@@ -6,14 +6,14 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="container-px scroll-mt-20 py-24 sm:py-32"
+      className="container-px scroll-mt-20 py-14 sm:py-20"
     >
       <Reveal className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-ink-900/60 px-6 py-16 text-center sm:px-12">
         <div className="grid-bg absolute inset-0 -z-10 opacity-50" />
         <div className="absolute left-1/2 top-0 -z-10 h-64 w-96 -translate-x-1/2 rounded-full bg-accent/10 blur-[120px]" />
 
         <div className="section-label mb-4">// get_in_touch</div>
-        <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <h2 className="mx-auto max-w-2xl font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
           Let's build something that{" "}
           <span className="text-gradient">moves markets.</span>
         </h2>

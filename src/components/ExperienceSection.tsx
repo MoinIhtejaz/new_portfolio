@@ -1,7 +1,6 @@
-import { Briefcase } from "lucide-react";
 import Section from "./Section";
 import { experience } from "../data/portfolio";
-import { Stagger, StaggerItem } from "../lib/motion";
+import { Reveal } from "../lib/motion";
 
 export default function ExperienceSection() {
   return (
@@ -10,50 +9,44 @@ export default function ExperienceSection() {
       label="// where_i_have_worked"
       title="Experience"
     >
-      <Stagger className="space-y-6">
-        {experience.map((job) => (
-          <StaggerItem key={job.company} className="card p-6 sm:p-8">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div className="flex items-start gap-4">
-                <div className="mt-0.5 rounded-lg border border-white/10 bg-ink-800 p-2.5 text-accent">
-                  <Briefcase size={20} />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">
-                    {job.company}
-                  </h3>
-                  <p className="mt-0.5 text-xs text-slate-500">
-                    {job.location}
-                  </p>
-                </div>
+      <div className="border-t border-white/[0.08]">
+        {experience.map((job, i) => (
+          <Reveal key={job.company} delay={i * 0.06}>
+            <div className="grid grid-cols-1 gap-x-12 gap-y-6 border-b border-white/[0.08] py-10 md:grid-cols-[240px_1fr]">
+              {/* Left rail: when + where */}
+              <div>
+                <p className="font-mono text-sm text-slate-400">{job.period}</p>
+                <p className="mt-1.5 font-mono text-xs text-slate-600">
+                  {job.location}
+                </p>
               </div>
-              <span className="font-mono text-xs text-slate-500">
-                {job.period}
-              </span>
-            </div>
 
-            <ul className="mt-6 space-y-3">
-              {job.bullets.map((b, j) => (
-                <li key={j} className="flex gap-3 text-sm text-slate-400">
-                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
-                  <span className="leading-relaxed">{b}</span>
-                </li>
-              ))}
-            </ul>
+              {/* Right: the work itself */}
+              <div>
+                <h3 className="font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                  {job.company}
+                </h3>
 
-            <div className="mt-6 flex flex-wrap gap-2">
-              {job.tags.map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-white/[0.06] bg-ink-800/60 px-3 py-1 font-mono text-xs text-slate-400"
-                >
-                  {t}
-                </span>
-              ))}
+                <ul className="mt-6 max-w-2xl space-y-4">
+                  {job.bullets.map((b, j) => (
+                    <li
+                      key={j}
+                      className="flex gap-3 text-sm leading-relaxed text-slate-400 sm:text-base"
+                    >
+                      <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-accent" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="mt-7 font-mono text-xs tracking-wide text-slate-500">
+                  {job.tags.join("  ·  ")}
+                </p>
+              </div>
             </div>
-          </StaggerItem>
+          </Reveal>
         ))}
-      </Stagger>
+      </div>
     </Section>
   );
 }

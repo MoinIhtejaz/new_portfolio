@@ -99,7 +99,7 @@ function SlideContent({ project, reduce }: { project: Project; reduce: boolean }
           {project.featured && <span className="ml-1 text-slate-600">★</span>}
         </div>
 
-        <h3 className="mt-4 text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <h3 className="mt-4 text-balance font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
           {project.title}
         </h3>
         <p className="mt-2 font-mono text-xs text-accent">{project.subtitle}</p>
