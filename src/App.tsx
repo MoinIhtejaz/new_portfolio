@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import Nav from "./components/Nav";
 import AmbientBackground from "./components/AmbientBackground";
-import TerminalIntro from "./components/TerminalIntro";
+import CtosIntro from "./components/CtosIntro";
 import Hero from "./components/Hero";
 import Education from "./components/Education";
 import About from "./components/About";
@@ -20,7 +20,7 @@ export default function App() {
       <AmbientBackground />
 
       <AnimatePresence>
-        {!booted && <TerminalIntro onDone={() => setBooted(true)} />}
+        {!booted && <CtosIntro onDone={() => setBooted(true)} />}
       </AnimatePresence>
 
       {booted && (
