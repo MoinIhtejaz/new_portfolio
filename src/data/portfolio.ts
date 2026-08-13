@@ -3,6 +3,10 @@
 //  Add new projects, experience, or skills here; the UI updates automatically.
 // ============================================================================
 
+import algothonVideo from "../assets/media/algothon.mp4";
+import algothonPoster from "../assets/media/algothon-poster.jpg";
+import algojamResults from "../assets/media/algojam-results.png";
+
 export const profile = {
   name: "Maheer Ihtejaz Moin",
   shortName: "Maheer",
@@ -201,6 +205,84 @@ export const skills: SkillGroup[] = [
       "Risk Management",
       "Quantitative Research",
     ],
+  },
+];
+
+export type Competition = {
+  name: string;
+  organisation: string;
+  year: string;
+  role: string;
+  result: string;
+  bullets: string[];
+  // Headline numbers shown as a mono stat strip
+  stats?: { value: string; label: string }[];
+  tags?: string[];
+  // Organiser logo. Drop `<logoKey>.<ext>` into src/assets/logos/ and it is
+  // picked up automatically; omit the file and the entry renders without one.
+  logoKey?: string;
+  logoAlt?: string;
+  // Optional demo: click-to-expand lightbox with a blurred backdrop.
+  // Omit `video` and `poster` is presented as a still image.
+  demo?: { poster: string; label: string; video?: string; caption?: string };
+};
+
+export const competitions: Competition[] = [
+  {
+    name: "Susquehanna Algothon",
+    organisation: "Susquehanna International Group (SIG)",
+    year: "2026",
+    role: "Team Lead",
+    result: "Top 15% · Australia & New Zealand",
+    logoKey: "susquehanna",
+    logoAlt: "Susquehanna International Group",
+    demo: {
+      video: algothonVideo,
+      poster: algothonPoster,
+      label: "monitoring_terminal.rec",
+    },
+    bullets: [
+      "Led a four-stage research cycle from signal generation to frozen submission, finishing in the top 15% of entrants drawn from every university in Australia and New Zealand.",
+      "Produced $1,050 mean daily PnL at 6.43 annualised Sharpe across 51 instruments and $114.9M of traded volume, by building a market-neutral book in pure NumPy from a ridge vector autoregression ensemble, cointegration pairs and reversal signals.",
+      "Generated +$262,508 cumulative PnL over a 250-day held-out test at 29 ms median decision latency, by validating the frozen model on post-freeze synthetic markets and tracking PnL attribution in a real-time monitoring terminal I built.",
+      "Cut 100+ candidate signals to the three that shipped, by benchmarking LSTMs, Kalman filters and multi-asset cointegration against pre-registered train and holdout splits and deriving blend weights statistically.",
+    ],
+    stats: [
+      { value: "6.43", label: "annualised Sharpe" },
+      { value: "+$262.5K", label: "cumulative PnL, 250-day holdout" },
+      { value: "$114.9M", label: "traded volume" },
+      { value: "29 ms", label: "median decision latency" },
+    ],
+    tags: ["Python", "NumPy", "Statistical Arbitrage"],
+  },
+  {
+    name: "IMC AlgoJam 2026",
+    organisation: "IMC Trading",
+    year: "2026",
+    role: "Team Lead",
+    result: "9th of 40 teams · Top 10 finish",
+    logoKey: "imc",
+    logoAlt: "IMC Trading",
+    demo: {
+      poster: algojamResults,
+      label: "algojam_2026_results.png",
+      caption:
+        "Full simulation across both years — the visible development year and the hidden scoring year revealed at marking.",
+    },
+    bullets: [
+      "Led signal research, out-of-sample validation and release of the final trading system to a top 10 finish, scored on a hidden second year of market data no entrant saw before submission.",
+      "Delivered $568,609 of backtest PnL at 14.85 Sharpe and $4,898 maximum drawdown across nine instruments over the 365-day visible year, by reverse-engineering each price process from its stated mechanism and pricing it in a dependency-free Python system that runs on a stock CPython interpreter with no third-party packages.",
+      "Raised mean PnL on the game-theoretic instrument to $588,237 across 300 held-out opponent simulations, 4.4x the pooled baseline at a third of the loss probability, by fading the room's prior-day lean and discounting the estimate two standard errors so the system abstains when the edge is unmeasurable.",
+      "Held zero risk-limit breaches, invalid positions or type errors across 365 days, 1,056 Monte Carlo scenarios and adversarial price paths, by replacing a static 3% margin with exact greedy allocation against the $600,000 notional limit and an enforcement pass that rebuilds the book the exchange's way.",
+      "Retired three signals fitted to noise and two strategy layers worth $152,800 a year, by split-half testing every information coefficient, running a 200-shuffle permutation null against a Bonferroni threshold, and re-testing candidates on pre-registered seed streams.",
+    ],
+    stats: [
+      { value: "$990,714", label: "total simulated P&L" },
+      { value: "9th / 40", label: "final placing" },
+      { value: "9", label: "instruments traded" },
+      { value: "~90%", label: "of $600K notional deployed" },
+    ],
+    tags: ["Python", "NumPy", "Pandas"],
   },
 ];
 

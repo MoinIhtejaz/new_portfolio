@@ -29,7 +29,8 @@ export default function Education() {
               </p>
               <p className="mt-1 text-sm text-slate-400">{education.majors}</p>
 
-              <div className="mt-8 space-y-3.5">
+              {/* Scholarships, tucked directly under the degree */}
+              <div className="mt-7 space-y-3.5">
                 {education.honors.map((h) => (
                   <div key={h} className="flex items-center gap-3">
                     <Award
