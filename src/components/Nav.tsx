@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { profile } from "../data/portfolio";
 
 const links = [
   { href: "#education", label: "Education" },
@@ -49,7 +50,7 @@ export default function Nav() {
             </a>
           ))}
           <a
-            href="/Maheer_Ihtejaz_Moin_Resume.pdf"
+            href={profile.resumeUrl}
             target="_blank"
             rel="noreferrer"
             className="rounded-full border border-accent/40 px-4 py-1.5 text-sm font-medium text-accent transition-all duration-300 hover:bg-accent/10 active:scale-[0.98]"
@@ -81,7 +82,7 @@ export default function Nav() {
               </a>
             ))}
             <a
-              href="/Maheer_Ihtejaz_Moin_Resume.pdf"
+              href={profile.resumeUrl}
               target="_blank"
               rel="noreferrer"
               className="mt-2 rounded-full border border-accent/40 px-4 py-2 text-center text-accent"
