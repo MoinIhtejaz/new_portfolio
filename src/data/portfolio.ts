@@ -10,7 +10,7 @@ import algojamResults from "../assets/media/algojam-results.png";
 export const profile = {
   name: "Maheer Ihtejaz Moin",
   shortName: "Maheer",
-  role: "Quantitative & Software Engineer",
+  role: "Forward Deployed Engineer",
   tagline: "Computational Data Science & Finance @ University of Sydney",
   location: "Sydney, NSW",
   email: "ihtejaz555@gmail.com",
@@ -20,20 +20,20 @@ export const profile = {
     linkedin: "https://www.linkedin.com/in/maheer-",
   },
   summary:
-    "Advanced Computing (Honours) student at the University of Sydney, double majoring in Computational Data Science & Finance. I build high-performance systems, large-scale data research pipelines, and quantitative models (volatility forecasting, options pricing, portfolio optimisation), and I ship full-stack software end to end. Seeking software engineering and quantitative internships where hard problems meet production-grade technology.",
-  availability: "Graduating 2028 · Seeking SWE & quant internships",
+    "I do my best work sitting with the people who will actually use what I build. At 2A Marketing that meant turning half-formed requests into user stories, shipping the product myself, and then keeping it alive once real customers depended on it. I am studying Advanced Computing (Honours) at the University of Sydney, double majoring in Computational Data Science and Finance. The quantitative half handles the messy data and the modelling. The engineering half gets it in front of users and keeps it there.",
+  availability: "Graduating 2028 · Seeking forward deployed engineering internships",
 };
 
 // Rotating words in the hero
 export const heroRoles = [
+  "Forward Deployed Engineering",
+  "Customer-Facing Delivery",
+  "Full-Stack Ownership",
   "Quantitative Modelling",
-  "High-Performance Systems",
-  "Machine Learning & NLP",
-  "Full-Stack Engineering",
 ];
 
 export const stats = [
-  { value: "5+", label: "Quant & data projects shipped" },
+  { value: "5+", label: "Projects shipped end to end" },
   { value: "2", label: "Double major: CompSci · Finance" },
   { value: "10", label: "Equities modelled (Optiver order-book)" },
   { value: "WAM", label: "Dalyell Scholar · VC Scholarship" },
@@ -53,11 +53,22 @@ export const experience: Experience[] = [
     location: "Sydney, NSW",
     period: "Mar 2023 – Dec 2023",
     bullets: [
-      "Built and deployed a full-stack website for company information, communications, and online sales, featuring a splash screen and Framer Motion animations for a polished, responsive user experience, hosted on the company domain.",
+      "Worked directly with the client for the whole engagement: ran the requirements conversations, wrote the user stories and acceptance criteria myself, and demoed each increment so they could redirect the work while changes were still cheap.",
+      "Owned delivery as the only engineer on the project. Groomed the backlog, sized each iteration against what the business needed that month, and shipped in small releases instead of one big launch.",
+      "Built and deployed the company's full-stack website for information, communications, and online sales, with a responsive layout, splash screen, and Framer Motion animations, hosted on the company domain.",
       "Architected the backend on Supabase for data storage, authentication, and live content management.",
       "Built a shipment-tracking portal emulating a version-control-style environment to manage shipping documents, with live shipment status updates.",
+      "Kept the product alive after launch: cut releases, fixed what broke in production, and handled change requests as the business found new things it needed.",
     ],
-    tags: ["React", "Node.js", "Supabase", "Framer Motion", "Full-Stack"],
+    tags: [
+      "React",
+      "Node.js",
+      "Supabase",
+      "Framer Motion",
+      "Full-Stack",
+      "Agile",
+      "Client-Facing",
+    ],
   },
 ];
 
@@ -224,7 +235,14 @@ export type Competition = {
   logoAlt?: string;
   // Optional demo: click-to-expand lightbox with a blurred backdrop.
   // Omit `video` and `poster` is presented as a still image.
-  demo?: { poster: string; label: string; video?: string; caption?: string };
+  demo?: {
+    poster: string;
+    label: string;
+    video?: string;
+    caption?: string;
+    /** Seconds into the video to start playback. */
+    startTime?: number;
+  };
 };
 
 export const competitions: Competition[] = [
@@ -267,7 +285,7 @@ export const competitions: Competition[] = [
       poster: algojamResults,
       label: "algojam_2026_results.png",
       caption:
-        "Full simulation across both years — the visible development year and the hidden scoring year revealed at marking.",
+        "Full simulation across both years: the visible development year and the hidden scoring year revealed at marking.",
     },
     bullets: [
       "Led signal research, out-of-sample validation and release of the final trading system to a top 10 finish, scored on a hidden second year of market data no entrant saw before submission.",

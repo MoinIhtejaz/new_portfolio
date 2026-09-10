@@ -11,6 +11,8 @@ type Props = {
   src?: string;
   /** Optional line under the expanded media, e.g. what window it covers. */
   caption?: string;
+  /** Seconds into the video to start (and loop back to). Defaults to 0. */
+  startTime?: number;
 };
 
 // One shared motion signature so the open and close feel like the same object
@@ -26,7 +28,13 @@ const SPRING = { type: "spring" as const, stiffness: 280, damping: 32, mass: 0.9
  * Pass `src` for a recording; omit it and the poster is presented as a still
  * (used for result charts and screenshots).
  */
-export default function MediaLightbox({ poster, label, src, caption }: Props) {
+export default function MediaLightbox({
+  poster,
+  label,
+  src,
+  caption,
+  startTime = 0,
+}: Props) {
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
   const uid = useId();
@@ -145,9 +153,19 @@ export default function MediaLightbox({ poster, label, src, caption }: Props) {
                     poster={poster}
                     autoPlay
                     muted
-                    loop
+                    // Native looping restarts at 0, so a trimmed start loops
+                    // manually via onEnded instead.
+                    loop={startTime === 0}
                     playsInline
                     controls
+                    onLoadedMetadata={(e) => {
+                      if (startTime > 0) e.currentTarget.currentTime = startTime;
+                    }}
+                    onEnded={(e) => {
+                      if (startTime === 0) return;
+                      e.currentTarget.currentTime = startTime;
+                      void e.currentTarget.play();
+                    }}
                     className="min-h-0 w-full object-contain"
                   />
                 ) : (

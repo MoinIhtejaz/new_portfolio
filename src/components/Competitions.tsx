@@ -60,6 +60,7 @@ export default function Competitions() {
                         poster={c.demo.poster}
                         label={c.demo.label}
                         caption={c.demo.caption}
+                        startTime={c.demo.startTime}
                       />
                     </div>
                   )}
