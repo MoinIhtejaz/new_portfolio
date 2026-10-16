@@ -26,6 +26,9 @@ export default function ExperienceSection() {
                 <h3 className="font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
                   {job.company}
                 </h3>
+                {job.role && (
+                  <p className="mt-1.5 text-sm text-accent">{job.role}</p>
+                )}
 
                 <ul className="mt-6 max-w-2xl space-y-4">
                   {job.bullets.map((b, j) => (

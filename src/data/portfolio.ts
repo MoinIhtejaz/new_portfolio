@@ -10,7 +10,7 @@ import algojamResults from "../assets/media/algojam-results.png";
 export const profile = {
   name: "Maheer Ihtejaz Moin",
   shortName: "Maheer",
-  role: "Forward Deployed Engineer",
+  role: "Software Engineer",
   tagline: "Computational Data Science & Finance @ University of Sydney",
   location: "Sydney, NSW",
   email: "ihtejaz555@gmail.com",
@@ -20,16 +20,16 @@ export const profile = {
     linkedin: "https://www.linkedin.com/in/maheer-",
   },
   summary:
-    "I do my best work sitting with the people who will actually use what I build. At 2A Marketing that meant turning half-formed requests into user stories, shipping the product myself, and then keeping it alive once real customers depended on it. I am studying Advanced Computing (Honours) at the University of Sydney, double majoring in Computational Data Science and Finance. The quantitative half handles the messy data and the modelling. The engineering half gets it in front of users and keeps it there.",
-  availability: "Graduating 2028 · Seeking forward deployed engineering internships",
+    "I build software end to end and like owning the whole stack. At 2A Marketing I was the only developer on the company's first online sales platform, from the Postgres schema and access control through to deployment and the maintenance after it. Outside of work I build systems that have to hold up under pressure: a dependency-free trading engine that ran 365 days without a risk-limit breach, a browser monitoring terminal in vanilla JavaScript and Canvas, a Bloom filter in C++. I am studying Advanced Computing (Honours) at the University of Sydney, double majoring in Computational Data Science and Finance.",
+  availability: "Graduating 2028 · Seeking software engineering internships",
 };
 
 // Rotating words in the hero
 export const heroRoles = [
-  "Forward Deployed Engineering",
-  "Customer-Facing Delivery",
-  "Full-Stack Ownership",
-  "Quantitative Modelling",
+  "Full-Stack Engineering",
+  "Systems Architecture",
+  "Distributed Computing",
+  "Machine Learning & Data",
 ];
 
 export const stats = [
@@ -41,6 +41,7 @@ export const stats = [
 
 export type Experience = {
   company: string;
+  role?: string;
   location: string;
   period: string;
   bullets: string[];
@@ -49,25 +50,25 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
-    company: "2A Marketing",
+    company: "2A Marketing Pty Ltd",
+    role: "Full-Stack Developer Intern",
     location: "Sydney, NSW",
-    period: "Mar 2023 – Dec 2023",
+    period: "Mar 2025 – Dec 2025",
     bullets: [
-      "Worked directly with the client for the whole engagement: ran the requirements conversations, wrote the user stories and acceptance criteria myself, and demoed each increment so they could redirect the work while changes were still cheap.",
-      "Owned delivery as the only engineer on the project. Groomed the backlog, sized each iteration against what the business needed that month, and shipped in small releases instead of one big launch.",
-      "Built and deployed the company's full-stack website for information, communications, and online sales, with a responsive layout, splash screen, and Framer Motion animations, hosted on the company domain.",
-      "Architected the backend on Supabase for data storage, authentication, and live content management.",
-      "Built a shipment-tracking portal emulating a version-control-style environment to manage shipping documents, with live shipment status updates.",
-      "Kept the product alive after launch: cut releases, fixed what broke in production, and handled change requests as the business found new things it needed.",
+      "Built the company's first online sales platform: a React application with Vite, client-side routing and automatic deployments to Vercel through GitHub, routed through the company's domain.",
+      "Built a Supabase and PostgreSQL backend that lets non-technical staff manage website listings themselves, including authentication, role-based access control and row-level security.",
+      "Developed a document and shipping tracking app giving staff and customers versioned files and real-time updates.",
+      "Built an admin dashboard for vehicle listings, including image uploads to object storage, public URL generation and database updates with optimistic UI interactions.",
+      "Owned the stack end to end as the sole developer, from database and access-control design through deployment and post-launch maintenance.",
     ],
     tags: [
       "React",
-      "Node.js",
+      "Vite",
+      "TypeScript",
       "Supabase",
-      "Framer Motion",
+      "PostgreSQL",
+      "Vercel",
       "Full-Stack",
-      "Agile",
-      "Client-Facing",
     ],
   },
 ];
@@ -88,34 +89,34 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Future Volatility Forecasting",
-    subtitle: "Optiver Industry Project",
-    category: "Quant",
+    title: "Efficient Email Filtering System",
+    subtitle: "Bloom Filter · C++",
+    category: "Systems",
     featured: true,
     description:
-      "An end-to-end research pipeline that forecasts realised volatility from large-scale Optiver order-book data and drives an options-pricing engine.",
+      "A Bloom filter built from scratch in C++ for duplicate email detection: constant-time membership checks with zero false negatives under tight memory constraints.",
     highlights: [
-      "Engineered features from large-scale order-book data across 10 technology equities: realised volatility, log returns, bid–ask spread, and weighted average price (WAP).",
-      "Fitted HAR-RV and ARMA–GARCH models and trained an XGBoost regressor to forecast future stock volatility.",
-      "Built a trading-engine application that uses the fitted and trained models to predict future volatility and drive an options-pricing engine.",
+      "Detected duplicate emails with 0 false negatives and a 0.8% false positive rate on a 1,485 item workload.",
+      "Implemented seven hash functions over a 15,000-bit array and added Base64 serialisation.",
+      "Turned it into a usable command line tool with file and live ingestion, supporting real-time ADD, CHECK and SHOW operations.",
     ],
-    stack: ["Python", "XGBoost", "ARMA–GARCH", "HAR-RV", "NumPy", "Pandas"],
-    mediaKey: "volatility",
+    stack: ["C++", "Bloom Filter", "Hashing", "CLI", "Data Structures"],
+    mediaKey: "bloom",
   },
   {
-    title: "Stock Portfolio Optimisation",
-    subtitle: "Markowitz Mean-Variance Model",
+    title: "Intraday Volatility Forecasting",
+    subtitle: "Optiver Industry Project · R",
     category: "Quant",
     featured: true,
     description:
-      "A Modern Portfolio Theory engine, wrapped in an interactive application: end-to-end software engineering from quantitative model to deployable tool.",
+      "A forecasting pipeline over nine months of Optiver limit order book data, benchmarked against the HAR-X baseline across rolling and expanding windows.",
     highlights: [
-      "Implemented Modern Portfolio Theory with quadratic optimisation (SciPy) to derive the efficient frontier and the maximum-Sharpe-ratio and minimum-variance portfolios.",
-      "Validated the optimiser with Monte Carlo simulation across thousands of random portfolios.",
-      "Built an interactive application around the optimiser, taking the quantitative model all the way to a usable, deployable tool.",
+      "Cut QLIKE forecast error 38% against the HAR-X baseline, by specifying a GJR-GARCH model that won 33 of 40 stock horizon cells across 10 US equities.",
+      "Produced 48,600 out-of-sample forecasts with zero failed fits across 360 backtest simulations.",
+      "Cut QLIKE from 1.38 to 0.181 between worst and best case, by caching period level features over nine months of limit order book data and rolling and expanding windows from 30 to 500 periods.",
     ],
-    stack: ["Python", "SciPy", "NumPy", "Monte Carlo", "Matplotlib"],
-    mediaKey: "optimiser",
+    stack: ["R", "rugarch", "glmnet", "data.table", "GJR-GARCH"],
+    mediaKey: "volatility",
   },
   {
     title: "End-to-End Automated Data Pipeline",
@@ -132,20 +133,6 @@ export const projects: Project[] = [
     stack: ["Python", "Pandas", "SciPy", "Streamlit", "GPT-4 API"],
     mediaKey: "pipeline",
   },
-  {
-    title: "Efficient Email Filtering System",
-    subtitle: "Bloom Filter · C++",
-    category: "Systems",
-    description:
-      "A space-efficient email-filtering system in C++ using a Bloom filter for rapid, low-memory duplicate detection with zero false negatives.",
-    highlights: [
-      "Engineered a 7-hash Bloom filter over a 15,000-bit array with custom polynomial rolling hashes for fast membership checks under tight memory constraints.",
-      "Implemented Base64 bit-array serialisation, CLI command parsing, and email ingestion from file and live input.",
-      "Supported real-time ADD, CHECK, and SHOW operations.",
-    ],
-    stack: ["C++", "Bloom Filter", "Hashing", "CLI", "Data Structures"],
-    mediaKey: "bloom",
-  },
 ];
 
 export type SkillGroup = {
@@ -156,65 +143,74 @@ export type SkillGroup = {
 export const skills: SkillGroup[] = [
   {
     name: "Languages",
-    items: ["Python", "C++", "Java", "SQL", "R"],
+    items: [
+      "Java",
+      "Python",
+      "C++",
+      "C",
+      "JavaScript",
+      "TypeScript",
+      "SQL",
+      "R",
+    ],
   },
   {
     name: "Software Engineering",
     items: [
-      "Systems Architecture",
-      "High-Performance & Low-Latency Systems",
-      "Distributed Computing",
-      "Concurrency",
+      "Object-Oriented Programming",
       "Data Structures & Algorithms",
-      "OOP",
+      "Systems Architecture",
+      "REST API Design",
+      "Concurrency",
+      "Distributed Computing",
+      "High-Performance & Low-Latency Systems",
+      "Hashing & Probabilistic Data Structures",
+      "Code Review & Refactoring",
+      "Debugging & Profiling",
+      "Agile",
+    ],
+  },
+  {
+    name: "Cloud, Platforms & Tooling",
+    items: [
       "Linux",
       "Git & GitHub",
       "Docker",
       "Kubernetes",
       "CI/CD (GitHub Actions)",
+      "Vercel",
+      "Monitoring & Observability Dashboards",
       "Pytest",
-      "Agile",
+      "Unit, Regression & Reconciliation Testing",
     ],
   },
   {
-    name: "Web & Platforms",
+    name: "Web & Data",
     items: [
       "React",
       "Node.js",
       "Tailwind CSS",
       "Supabase",
-      "Streamlit",
-      "REST APIs",
-      "Full-Stack Development",
+      "PostgreSQL",
+      "Relational Schema Design",
+      "Row-Level Security",
+      "Object Storage",
     ],
   },
   {
-    name: "Machine Learning & Data",
+    name: "Quantitative & Machine Learning",
     items: [
-      "Machine Learning",
-      "Natural Language Processing",
-      "GPT-4 API Integration",
-      "XGBoost",
       "NumPy",
       "Pandas",
       "SciPy",
-      "Statistical Modelling",
-      "Large-Scale Data Platforms",
-    ],
-  },
-  {
-    name: "Quantitative & Finance",
-    items: [
-      "Probability & Statistics",
-      "Time-Series (ARMA–GARCH, HAR-RV)",
+      "Time-Series (VAR, GJR-GARCH, HAR-RV)",
+      "Ridge & Elastic-Net Regularisation",
+      "Kalman Filters",
+      "LSTM",
+      "XGBoost",
       "Monte Carlo Simulation",
-      "Hypothesis Testing",
-      "Mathematical Modelling",
-      "Options Pricing",
-      "Portfolio Optimisation",
-      "Market Microstructure",
-      "Risk Management",
-      "Quantitative Research",
+      "Hypothesis & Permutation Testing",
+      "Backtesting",
     ],
   },
 ];
@@ -247,33 +243,6 @@ export type Competition = {
 
 export const competitions: Competition[] = [
   {
-    name: "Susquehanna Algothon",
-    organisation: "Susquehanna International Group (SIG)",
-    year: "2026",
-    role: "Team Lead",
-    result: "Top 15% · Australia & New Zealand",
-    logoKey: "susquehanna",
-    logoAlt: "Susquehanna International Group",
-    demo: {
-      video: algothonVideo,
-      poster: algothonPoster,
-      label: "monitoring_terminal.rec",
-    },
-    bullets: [
-      "Led a four-stage research cycle from signal generation to frozen submission, finishing in the top 15% of entrants drawn from every university in Australia and New Zealand.",
-      "Produced $1,050 mean daily PnL at 6.43 annualised Sharpe across 51 instruments and $114.9M of traded volume, by building a market-neutral book in pure NumPy from a ridge vector autoregression ensemble, cointegration pairs and reversal signals.",
-      "Generated +$262,508 cumulative PnL over a 250-day held-out test at 29 ms median decision latency, by validating the frozen model on post-freeze synthetic markets and tracking PnL attribution in a real-time monitoring terminal I built.",
-      "Cut 100+ candidate signals to the three that shipped, by benchmarking LSTMs, Kalman filters and multi-asset cointegration against pre-registered train and holdout splits and deriving blend weights statistically.",
-    ],
-    stats: [
-      { value: "6.43", label: "annualised Sharpe" },
-      { value: "+$262.5K", label: "cumulative PnL, 250-day holdout" },
-      { value: "$114.9M", label: "traded volume" },
-      { value: "29 ms", label: "median decision latency" },
-    ],
-    tags: ["Python", "NumPy", "Statistical Arbitrage"],
-  },
-  {
     name: "IMC AlgoJam 2026",
     organisation: "IMC Trading",
     year: "2026",
@@ -295,19 +264,47 @@ export const competitions: Competition[] = [
       "Retired three signals fitted to noise and two strategy layers worth $152,800 a year, by split-half testing every information coefficient, running a 200-shuffle permutation null against a Bonferroni threshold, and re-testing candidates on pre-registered seed streams.",
     ],
     stats: [
-      { value: "$990,714", label: "total simulated P&L" },
       { value: "9th / 40", label: "final placing" },
-      { value: "9", label: "instruments traded" },
-      { value: "~90%", label: "of $600K notional deployed" },
+      { value: "$568,609", label: "backtest PnL, 365-day visible year" },
+      { value: "14.85", label: "Sharpe ratio" },
+      { value: "$4,898", label: "maximum drawdown" },
     ],
     tags: ["Python", "NumPy", "Pandas"],
+  },
+  {
+    name: "Susquehanna Algothon",
+    organisation: "Susquehanna International Group (SIG)",
+    year: "2026",
+    role: "Team Lead",
+    result: "Top 15% · Australia & New Zealand",
+    logoKey: "susquehanna",
+    logoAlt: "Susquehanna International Group",
+    demo: {
+      video: algothonVideo,
+      poster: algothonPoster,
+      label: "monitoring_terminal.rec",
+    },
+    bullets: [
+      "Led development of a market-neutral trading engine that achieved $262,508 cumulative PnL on 250 held-out trading days, with 29 ms median decision latency across 51 instruments.",
+      "Combined several quantitative strategies: vector autoregression, cointegration pairs, and PCA-based cross-sectional reversals, with daily portfolio weight re-estimation.",
+      "Built a lightweight browser-based monitoring terminal using vanilla JavaScript, HTML Canvas and CSS, so the team could step through individual trading days and inspect alpha signals, drawdown, Sharpe and hit rate.",
+      "Added automated reconciliation checks so the dashboard matched the competition grader exactly, along with headless Node.js smoke tests covering the main charting paths.",
+      "Tested more than 100 candidate signals, including LSTMs, Kalman filters and multi-asset cointegration models, and narrowed them down using separate training and holdout datasets.",
+    ],
+    stats: [
+      { value: "+$262.5K", label: "cumulative PnL, 250-day holdout" },
+      { value: "29 ms", label: "median decision latency" },
+      { value: "51", label: "instruments traded" },
+      { value: "100+", label: "candidate signals tested" },
+    ],
+    tags: ["Python", "NumPy", "JavaScript", "HTML Canvas"],
   },
 ];
 
 export const education = {
   school: "The University of Sydney",
   location: "Sydney, NSW",
-  period: "2024 – 2028",
+  period: "Feb 2024 – Jun 2028",
   degree: "Bachelor of Advanced Computing (Honours)",
   majors: "Computational Data Science & Finance (Double Major)",
   honors: [
