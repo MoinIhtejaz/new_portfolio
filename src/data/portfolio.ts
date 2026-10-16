@@ -20,7 +20,7 @@ export const profile = {
     linkedin: "https://www.linkedin.com/in/maheer-",
   },
   summary:
-    "I build software end to end and like owning the whole stack. At 2A Marketing I was the only developer on the company's first online sales platform, from the Postgres schema and access control through to deployment and the maintenance after it. Outside of work I build systems that have to hold up under pressure: a dependency-free trading engine that ran 365 days without a risk-limit breach, a browser monitoring terminal in vanilla JavaScript and Canvas, a Bloom filter in C++. I am studying Advanced Computing (Honours) at the University of Sydney, double majoring in Computational Data Science and Finance.",
+    "I build software end to end and like owning the whole stack. At 2A Marketing I shipped the company's first online sales platform: a React front end, a Supabase and Postgres backend with role-based access control and row-level security so non-technical staff could manage listings themselves, and a document tracking app with versioned files and live status updates. Outside of work I build systems that have to hold up under pressure: a dependency-free trading engine that ran 365 days without a risk-limit breach, a browser monitoring terminal in vanilla JavaScript and Canvas, a Bloom filter in C++. I am studying Advanced Computing (Honours) at the University of Sydney, double majoring in Computational Data Science and Finance.",
   availability: "Graduating 2028 · Seeking software engineering internships",
 };
 
@@ -243,6 +243,34 @@ export type Competition = {
 
 export const competitions: Competition[] = [
   {
+    name: "Susquehanna Algothon",
+    organisation: "Susquehanna International Group (SIG)",
+    year: "2026",
+    role: "Team Lead",
+    result: "Top 15% · Australia & New Zealand",
+    logoKey: "susquehanna",
+    logoAlt: "Susquehanna International Group",
+    demo: {
+      video: algothonVideo,
+      poster: algothonPoster,
+      label: "monitoring_terminal.rec",
+    },
+    bullets: [
+      "Led development of a market-neutral trading engine that achieved $262,508 cumulative PnL on 250 held-out trading days, with 29 ms median decision latency across 51 instruments.",
+      "Combined several quantitative strategies: vector autoregression, cointegration pairs, and PCA-based cross-sectional reversals, with daily portfolio weight re-estimation.",
+      "Built a lightweight browser-based monitoring terminal using vanilla JavaScript, HTML Canvas and CSS, so the team could step through individual trading days and inspect alpha signals, drawdown, Sharpe and hit rate.",
+      "Added automated reconciliation checks so the dashboard matched the competition grader exactly, along with headless Node.js smoke tests covering the main charting paths.",
+      "Tested more than 100 candidate signals, including LSTMs, Kalman filters and multi-asset cointegration models, and narrowed them down using separate training and holdout datasets.",
+    ],
+    stats: [
+      { value: "+$262.5K", label: "cumulative PnL, 250-day holdout" },
+      { value: "29 ms", label: "median decision latency" },
+      { value: "51", label: "instruments traded" },
+      { value: "100+", label: "candidate signals tested" },
+    ],
+    tags: ["Python", "NumPy", "JavaScript", "HTML Canvas"],
+  },
+  {
     name: "IMC AlgoJam 2026",
     organisation: "IMC Trading",
     year: "2026",
@@ -270,34 +298,6 @@ export const competitions: Competition[] = [
       { value: "$4,898", label: "maximum drawdown" },
     ],
     tags: ["Python", "NumPy", "Pandas"],
-  },
-  {
-    name: "Susquehanna Algothon",
-    organisation: "Susquehanna International Group (SIG)",
-    year: "2026",
-    role: "Team Lead",
-    result: "Top 15% · Australia & New Zealand",
-    logoKey: "susquehanna",
-    logoAlt: "Susquehanna International Group",
-    demo: {
-      video: algothonVideo,
-      poster: algothonPoster,
-      label: "monitoring_terminal.rec",
-    },
-    bullets: [
-      "Led development of a market-neutral trading engine that achieved $262,508 cumulative PnL on 250 held-out trading days, with 29 ms median decision latency across 51 instruments.",
-      "Combined several quantitative strategies: vector autoregression, cointegration pairs, and PCA-based cross-sectional reversals, with daily portfolio weight re-estimation.",
-      "Built a lightweight browser-based monitoring terminal using vanilla JavaScript, HTML Canvas and CSS, so the team could step through individual trading days and inspect alpha signals, drawdown, Sharpe and hit rate.",
-      "Added automated reconciliation checks so the dashboard matched the competition grader exactly, along with headless Node.js smoke tests covering the main charting paths.",
-      "Tested more than 100 candidate signals, including LSTMs, Kalman filters and multi-asset cointegration models, and narrowed them down using separate training and holdout datasets.",
-    ],
-    stats: [
-      { value: "+$262.5K", label: "cumulative PnL, 250-day holdout" },
-      { value: "29 ms", label: "median decision latency" },
-      { value: "51", label: "instruments traded" },
-      { value: "100+", label: "candidate signals tested" },
-    ],
-    tags: ["Python", "NumPy", "JavaScript", "HTML Canvas"],
   },
 ];
 

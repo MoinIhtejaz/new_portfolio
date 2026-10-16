@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Maximize2, X } from "lucide-react";
@@ -37,9 +37,37 @@ export default function MediaLightbox({
 }: Props) {
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
-  const uid = useId();
-  const frameId = `lightbox-frame-${uid}`;
   const isVideo = Boolean(src);
+
+  // Manual FLIP. Framer's shared `layoutId` elects a lead element, and with the
+  // inline button still mounted it kept electing the button, leaving the panel
+  // parked at thumbnail size. Measuring both boxes ourselves is deterministic.
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [flip, setFlip] = useState<{
+    x: number;
+    y: number;
+    scale: number;
+  } | null>(null);
+
+  // The panel always lands dead centre of the viewport, so its resting box is
+  // known without measuring it. Computing the offset at click time keeps this
+  // a plain initial -> animate transition with nothing to race.
+  const openLightbox = () => {
+    const b = buttonRef.current?.getBoundingClientRect();
+    if (b && !reduce) {
+      const pad = window.innerWidth >= 640 ? 32 : 16;
+      const maxW = isVideo ? 768 : 1152; // max-w-3xl / max-w-6xl
+      const finalW = Math.min(window.innerWidth - pad * 2, maxW);
+      setFlip({
+        x: b.left + b.width / 2 - window.innerWidth / 2,
+        y: b.top + b.height / 2 - window.innerHeight / 2,
+        scale: finalW > 0 ? b.width / finalW : 1,
+      });
+    } else {
+      setFlip(null);
+    }
+    setOpen(true);
+  };
 
   // Esc to close, and lock page scroll while open.
   useEffect(() => {
@@ -69,9 +97,9 @@ export default function MediaLightbox({
       {/* Compact inline window. Hidden while open so the morphing copy in the
           portal is the only one on screen. */}
       <motion.button
+        ref={buttonRef}
         type="button"
-        onClick={() => setOpen(true)}
-        layoutId={reduce ? undefined : frameId}
+        onClick={openLightbox}
         transition={SPRING}
         whileHover={reduce ? undefined : { y: -3 }}
         whileTap={reduce ? undefined : { scale: 0.985 }}
@@ -89,7 +117,9 @@ export default function MediaLightbox({
         </div>
 
         <div className="relative">
-          <img src={poster} alt={`${label} preview`} className="w-full" loading="lazy" />
+          {/* Not lazy-loaded: the window has no reserved height, so a
+              not-yet-loaded poster collapses it to just the chrome bar. */}
+          <img src={poster} alt={`${label} preview`} className="w-full" decoding="async" />
           <div className="pointer-events-none absolute inset-0 bg-ink-950/30 transition-opacity duration-300 group-hover:opacity-0" />
           <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <span className="flex items-center gap-1.5 rounded-full bg-black/70 px-3 py-1.5 font-mono text-[10px] text-slate-100 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
@@ -122,11 +152,27 @@ export default function MediaLightbox({
               />
 
               <motion.div
-                layoutId={reduce ? undefined : frameId}
-                transition={SPRING}
-                initial={reduce ? { opacity: 0 } : undefined}
-                animate={reduce ? { opacity: 1 } : undefined}
-                exit={reduce ? { opacity: 0 } : undefined}
+                initial={
+                  reduce || !flip
+                    ? { opacity: 0 }
+                    : { ...flip, opacity: 1 }
+                }
+                animate={{
+                  x: 0,
+                  y: 0,
+                  scale: 1,
+                  opacity: 1,
+                  transition: reduce ? { duration: 0.2 } : SPRING,
+                }}
+                exit={
+                  reduce || !flip
+                    ? { opacity: 0, transition: { duration: 0.2 } }
+                    : {
+                        ...flip,
+                        opacity: 0,
+                        transition: { duration: 0.3, ease: [0.4, 0, 1, 1] },
+                      }
+                }
                 className={`relative z-10 flex max-h-full w-full flex-col overflow-hidden rounded-lg border border-white/10 bg-ink-950 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.85),0_0_70px_-25px_rgba(45,212,191,0.3)] ${
                   isVideo ? "max-w-3xl" : "max-w-6xl"
                 }`}
@@ -160,6 +206,11 @@ export default function MediaLightbox({
                     controls
                     onLoadedMetadata={(e) => {
                       if (startTime > 0) e.currentTarget.currentTime = startTime;
+                    }}
+                    // autoPlay alone can be refused once the element is
+                    // re-parented; ask again when there is data to show.
+                    onLoadedData={(e) => {
+                      void e.currentTarget.play().catch(() => {});
                     }}
                     onEnded={(e) => {
                       if (startTime === 0) return;

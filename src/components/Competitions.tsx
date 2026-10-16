@@ -36,7 +36,7 @@ export default function Competitions() {
                         src={logo}
                         alt={c.logoAlt ?? c.organisation}
                         className="mb-5 w-20 rounded-md sm:w-24"
-                        loading="lazy"
+                        decoding="async"
                       />
                     )}
 
