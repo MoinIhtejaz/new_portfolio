@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { profile } from "../data/portfolio";
+import { experience, profile } from "../data/portfolio";
 
 const links = [
   { href: "#education", label: "Education" },
@@ -9,7 +9,7 @@ const links = [
   { href: "#projects", label: "Projects" },
   { href: "#skills", label: "Skills" },
   { href: "#contact", label: "Contact" },
-];
+].filter((l) => l.href !== "#experience" || experience.length > 0);
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);

@@ -3,6 +3,8 @@ import { experience } from "../data/portfolio";
 import { Reveal } from "../lib/motion";
 
 export default function ExperienceSection() {
+  if (experience.length === 0) return null;
+
   return (
     <Section
       id="experience"

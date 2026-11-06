@@ -20,7 +20,7 @@ export const profile = {
     linkedin: "https://www.linkedin.com/in/maheer-",
   },
   summary:
-    "I build software end to end and like owning the whole stack. At 2A Marketing I shipped the company's first online sales platform: a React front end, a Supabase and Postgres backend with role-based access control and row-level security so non-technical staff could manage listings themselves, and a document tracking app with versioned files and live status updates. Outside of work I build systems that have to hold up under pressure: a dependency-free trading engine that ran 365 days without a risk-limit breach, a browser monitoring terminal in vanilla JavaScript and Canvas, a Bloom filter in C++. I am studying Advanced Computing (Honours) at the University of Sydney, double majoring in Computational Data Science and Finance.",
+    "I build software end to end and like owning the whole stack, especially systems that have to hold up under pressure: a dependency-free trading engine that ran 365 days without a risk-limit breach, a browser monitoring terminal in vanilla JavaScript and Canvas, a Bloom filter in C++. I am studying Advanced Computing (Honours) at the University of Sydney, double majoring in Computational Data Science and Finance.",
   availability: "Graduating 2028 · Seeking software engineering internships",
 };
 
@@ -48,30 +48,7 @@ export type Experience = {
   tags: string[];
 };
 
-export const experience: Experience[] = [
-  {
-    company: "2A Marketing Pty Ltd",
-    role: "Full-Stack Developer Intern",
-    location: "Sydney, NSW",
-    period: "Mar 2025 – Dec 2025",
-    bullets: [
-      "Built the company's first online sales platform: a React application with Vite, client-side routing and automatic deployments to Vercel through GitHub, routed through the company's domain.",
-      "Built a Supabase and PostgreSQL backend that lets non-technical staff manage website listings themselves, including authentication, role-based access control and row-level security.",
-      "Developed a document and shipping tracking app giving staff and customers versioned files and real-time updates.",
-      "Built an admin dashboard for vehicle listings, including image uploads to object storage, public URL generation and database updates with optimistic UI interactions.",
-      "Owned the stack end to end as the sole developer, from database and access-control design through deployment and post-launch maintenance.",
-    ],
-    tags: [
-      "React",
-      "Vite",
-      "TypeScript",
-      "Supabase",
-      "PostgreSQL",
-      "Vercel",
-      "Full-Stack",
-    ],
-  },
-];
+export const experience: Experience[] = [];
 
 export type Project = {
   title: string;
