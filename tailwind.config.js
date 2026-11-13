@@ -1,43 +1,36 @@
 /** @type {import('tailwindcss').Config} */
+const token = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        ink: {
-          950: "#070a12",
-          900: "#0b1020",
-          800: "#111728",
-          700: "#1a2236",
-          600: "#283149",
-        },
-        accent: {
-          DEFAULT: "#5eead4",
-          glow: "#2dd4bf",
-          soft: "#99f6e4",
-        },
-        signal: "#fbbf24",
+        // Semantic tokens. Values live in src/index.css and swap per theme.
+        paper: token("paper"), // page background
+        card: token("card"), // card background
+        fill: token("fill"), // quiet fill: tiles, hovers
+        ink: token("ink"),
+        muted: token("muted"),
+        faint: token("faint"),
+        accent: token("accent"), // vivid: fills and large type
+        "accent-ink": token("accent-ink"), // readable accent for small text
+        "accent-display": token("accent-display"), // accent for display-size type
+        "on-accent": token("on-accent"), // text on an accent fill
+        deep: token("deep"), // the dark closing section
+        rule: "rgb(var(--ink) / var(--rule-alpha))",
       },
       fontFamily: {
-        sans: ["'Plus Jakarta Sans'", "system-ui", "sans-serif"],
+        sans: ["'Geist'", "system-ui", "sans-serif"],
+        mono: ["'Geist Mono'", "ui-monospace", "monospace"],
+        // Dot-matrix numerals for results.
+        dot: ["'Doto'", "'Geist Mono'", "monospace"],
+        // Reserved for the entry splash screen (CtosIntro).
         display: ["'Space Grotesk'", "system-ui", "sans-serif"],
-        editorial: ["'Instrument Serif'", "Georgia", "serif"],
-        mono: ["'JetBrains Mono'", "ui-monospace", "monospace"],
       },
-      animation: {
-        "fade-up": "fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards",
-        "pulse-slow": "pulse 4s cubic-bezier(0.4,0,0.6,1) infinite",
-        marquee: "marquee 40s linear infinite",
-      },
-      keyframes: {
-        fadeUp: {
-          "0%": { opacity: "0", transform: "translateY(24px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        marquee: {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
-        },
+      boxShadow: {
+        lift: "var(--shadow-lift)",
+        capsule: "var(--shadow-capsule)",
       },
     },
   },

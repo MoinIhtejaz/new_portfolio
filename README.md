@@ -3,6 +3,8 @@
 A fast, responsive personal portfolio built with **Vite + React + TypeScript + Tailwind CSS**.
 Designed for quant (Jane Street, Optiver) and big-tech (Amazon, Atlassian, Google, Meta) applications.
 
+The look: a white page with large, tight headlines, one vivid teal accent, dot-matrix numerals for results, a floating pill nav and a dark closing section (tokens in `src/index.css`; a dark theme is available from the toggle). Geist for text, Doto for numerals. Page order: hero, results wall, the story (job, competitions, degree), each step with its headline pinned beside the detail card, projects, skills, contact. The entry splash lives in `src/components/CtosIntro.tsx`.
+
 ## Develop
 
 ```bash
@@ -27,13 +29,14 @@ To add a project, append an object to the `projects` array:
 ```ts
 {
   title: "My New Project",
-  subtitle: "What it is",
-  category: "Quant",          // Quant | Data Science | Systems | Full-Stack
-  featured: true,             // optional
-  description: "One-line summary.",
-  highlights: ["Point 1", "Point 2"],
+  kind: "What it is",
+  tone: "blue",               // tag colour: gray blue green pink amber purple teal
+  summary: "One line for the card.",
+  metric: { value: "42%", label: "the headline result" }, // shown on the card cover
+  bullets: ["Point 1", "Point 2"],
   stack: ["Python", "PyTorch"],
   links: [{ label: "GitHub", href: "https://..." }], // optional
+  mediaKey: "my-project", // add src/assets/media/my-project.png to show media
 }
 ```
 

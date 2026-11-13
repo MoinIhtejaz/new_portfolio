@@ -1,288 +1,292 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, LayoutGrid, Rows3, X } from "lucide-react";
 import Section from "./Section";
+import Bullets from "./Bullets";
+import Tag from "./Tag";
 import { projects, type Project } from "../data/portfolio";
 import { getProjectMedia } from "../lib/projectMedia";
-import { Reveal } from "../lib/motion";
+import { EASE, Reveal } from "../lib/motion";
 
-const categoryColor: Record<Project["category"], { dot: string; text: string }> =
-  {
-    Quant: { dot: "bg-accent", text: "text-accent" },
-    "Data Science": { dot: "bg-sky-300", text: "text-sky-300" },
-    Systems: { dot: "bg-signal", text: "text-signal" },
-    "Full-Stack": { dot: "bg-fuchsia-300", text: "text-fuchsia-300" },
-  };
+type View = "gallery" | "table";
 
-// Slide choreography: cards swing in and out around the Y axis so the
-// carousel reads as a physical object turning in space.
-const slideVariants = {
-  enter: (dir: number) => ({
-    x: dir >= 0 ? 420 : -420,
-    opacity: 0,
-    rotateY: dir >= 0 ? 26 : -26,
-    scale: 0.94,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    rotateY: 0,
-    scale: 1,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-  },
-  exit: (dir: number) => ({
-    x: dir >= 0 ? -420 : 420,
-    opacity: 0,
-    rotateY: dir >= 0 ? -26 : 26,
-    scale: 0.94,
-    transition: { duration: 0.32, ease: [0.4, 0, 1, 1] },
-  }),
-};
-
-const fadeVariants = {
-  enter: { opacity: 0 },
-  center: { opacity: 1, transition: { duration: 0.3 } },
-  exit: { opacity: 0, transition: { duration: 0.2 } },
-};
-
-function SlideContent({ project, reduce }: { project: Project; reduce: boolean }) {
-  const colors = categoryColor[project.category];
+/** The cover of a project: its own media if a file exists, else its headline
+    result set large on a tinted tile. */
+function Cover({ project, tall = false }: { project: Project; tall?: boolean }) {
   const media = getProjectMedia(project.mediaKey);
+  const height = tall ? "h-44 sm:h-52" : "h-40";
 
-  // Pointer-tracking tilt: the panel leans toward the cursor.
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const rotateX = useSpring(useTransform(my, [0, 1], [5, -5]), {
-    stiffness: 160,
-    damping: 22,
-  });
-  const rotateY = useSpring(useTransform(mx, [0, 1], [-7, 7]), {
-    stiffness: 160,
-    damping: 22,
-  });
+  if (media) {
+    return media.type === "video" ? (
+      <video
+        src={media.src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className={`${height} w-full object-cover`}
+      />
+    ) : (
+      <img
+        src={media.src}
+        alt=""
+        loading="lazy"
+        className={`${height} w-full object-cover`}
+      />
+    );
+  }
 
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width);
-    my.set((e.clientY - r.top) / r.height);
-  };
-  const onLeave = () => {
-    mx.set(0.5);
-    my.set(0.5);
-  };
+  return (
+    <div
+      className={`tone-${project.tone} ${height} flex flex-col justify-end px-5 pb-4`}
+      style={{ background: "rgb(var(--t-bg))", color: "rgb(var(--t-fg))" }}
+    >
+      <p className="numeral text-[2.75rem]">{project.metric.value}</p>
+      <p className="mt-1.5 text-sm font-medium opacity-80">{project.metric.label}</p>
+    </div>
+  );
+}
+
+/** Full details for one project, opened from a card or a table row. */
+function ProjectPeek({ project, onClose }: { project: Project; onClose: () => void }) {
+  const reduce = useReducedMotion();
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const returnTo = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus({ preventScroll: true });
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+      returnTo?.focus({ preventScroll: true });
+    };
+  }, [onClose]);
 
   return (
     <motion.div
-      onMouseMove={reduce ? undefined : onMove}
-      onMouseLeave={reduce ? undefined : onLeave}
-      style={
-        reduce
-          ? undefined
-          : { rotateX, rotateY, transformStyle: "preserve-3d" }
-      }
-      className={`grid items-center gap-10 lg:gap-14 ${
-        media ? "lg:grid-cols-[1fr_1.05fr]" : "mx-auto max-w-3xl"
-      }`}
+      role="dialog"
+      aria-modal="true"
+      aria-label={project.title}
+      className="fixed inset-0 z-[90] flex items-end justify-center sm:items-center sm:p-8"
     >
-      {/* Text */}
-      <div style={reduce ? undefined : { transform: "translateZ(24px)" }}>
-        <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest">
-          <span className={`h-1.5 w-1.5 rounded-full ${colors.dot}`} />
-          <span className={colors.text}>{project.category}</span>
-          {project.featured && <span className="ml-1 text-slate-600">★</span>}
-        </div>
-
-        <h3 className="mt-4 text-balance font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          {project.title}
-        </h3>
-        <p className="mt-2 font-mono text-xs text-accent">{project.subtitle}</p>
-
-        <p className="mt-6 text-pretty text-sm leading-relaxed text-slate-400 sm:text-base">
-          {project.description}
-        </p>
-
-        <ul className="mt-6 space-y-3">
-          {project.highlights.map((h, i) => (
-            <li
-              key={i}
-              className="flex gap-3 text-sm leading-relaxed text-slate-400"
-            >
-              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
-              {h}
-            </li>
-          ))}
-        </ul>
-
-        <p className="mt-6 font-mono text-xs leading-relaxed text-slate-500">
-          {project.stack.join("  ·  ")}
-        </p>
-
-        {project.links && project.links.length > 0 && (
-          <div className="mt-5 flex flex-wrap gap-4">
-            {project.links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
-              >
-                {l.label}
-                <ArrowUpRight size={14} />
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Media: rendered only when the project has it */}
-      {media && (
-        <div
-          style={reduce ? undefined : { transform: "translateZ(52px)" }}
-          className="relative"
+      <motion.div
+        className="absolute inset-0 bg-black/55 backdrop-blur-sm"
+        onClick={onClose}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0, transition: { duration: 0.18 } }}
+        transition={{ duration: 0.25 }}
+      />
+      <motion.div
+        initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.98 }}
+        animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+        exit={
+          reduce
+            ? { opacity: 0 }
+            : { opacity: 0, y: 16, scale: 0.985, transition: { duration: 0.18 } }
+        }
+        transition={{ duration: 0.36, ease: EASE }}
+        className="relative z-10 flex max-h-[90dvh] w-full max-w-2xl flex-col overflow-hidden rounded-t-[28px] border border-rule bg-card shadow-lift sm:rounded-[28px]"
+      >
+        <button
+          ref={closeRef}
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-3 top-3 z-10 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors duration-200 hover:bg-black/55"
         >
-          <div className="absolute -inset-6 -z-10 rounded-3xl bg-accent/[0.07] blur-2xl" />
-          {media.type === "video" ? (
-            <video
-              src={media.src}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full rounded-2xl border border-white/10 shadow-2xl shadow-black/50"
-            />
-          ) : (
-            <img
-              src={media.src}
-              alt={`${project.title} preview`}
-              className="w-full rounded-2xl border border-white/10 shadow-2xl shadow-black/50"
-              loading="lazy"
-            />
-          )}
+          <X size={18} strokeWidth={2} />
+        </button>
+
+        <div className="overflow-y-auto">
+          <Cover project={project} tall />
+          <div className="px-5 pb-7 pt-6 sm:px-8 sm:pb-8">
+            <Tag tone={project.tone}>{project.kind}</Tag>
+            <h3 className="mt-3 text-[1.75rem] font-semibold leading-[1.08] tracking-[-0.035em] text-ink sm:text-[2.125rem]">
+              {project.title}
+            </h3>
+
+            <div className="mt-6">
+              <Bullets items={project.bullets} />
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-1.5">
+              {project.stack.map((s) => (
+                <Tag key={s}>{s}</Tag>
+              ))}
+            </div>
+
+            {project.links && project.links.length > 0 && (
+              <div className="mt-6 flex flex-wrap gap-3">
+                {project.links.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn-ghost h-9 px-4 text-sm"
+                  >
+                    {l.label}
+                    <ArrowUpRight size={14} strokeWidth={2} aria-hidden />
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      )}
+      </motion.div>
     </motion.div>
   );
 }
 
 export default function Projects() {
-  const [[index, direction], setState] = useState<[number, number]>([0, 0]);
-  const reduce = useReducedMotion() ?? false;
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const inView = useRef(false);
+  const [view, setView] = useState<View>("gallery");
+  const [peek, setPeek] = useState<Project | null>(null);
+  const closePeek = useCallback(() => setPeek(null), []);
 
-  const paginate = useCallback((dir: number) => {
-    setState(([i]) => [(i + dir + projects.length) % projects.length, dir]);
-  }, []);
-
-  // Arrow keys navigate, but only while the showcase is on screen.
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        inView.current = entry.isIntersecting;
-      },
-      { threshold: 0.25 }
-    );
-    observer.observe(el);
-
-    const onKey = (e: KeyboardEvent) => {
-      if (!inView.current) return;
-      if (e.key === "ArrowRight") paginate(1);
-      if (e.key === "ArrowLeft") paginate(-1);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [paginate]);
-
-  const project = projects[index];
+  const switcher = (
+    <div
+      role="group"
+      aria-label="Project layout"
+      className="flex shrink-0 rounded-full bg-fill p-1"
+    >
+      {(
+        [
+          { id: "gallery", label: "Gallery", Icon: LayoutGrid },
+          { id: "table", label: "Table", Icon: Rows3 },
+        ] as const
+      ).map(({ id, label, Icon }) => (
+        <button
+          key={id}
+          type="button"
+          aria-pressed={view === id}
+          onClick={() => setView(id)}
+          className={`flex h-9 cursor-pointer items-center gap-1.5 rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${
+            view === id
+              ? "bg-card text-ink shadow-[0_1px_2px_rgb(0_0_0/0.12)]"
+              : "text-muted hover:text-ink"
+          }`}
+        >
+          <Icon size={14} strokeWidth={2} aria-hidden />
+          {label}
+        </button>
+      ))}
+    </div>
+  );
 
   return (
-    <Section id="projects" label="// selected_work" title="Projects">
-      <Reveal>
-        <div
-          ref={sectionRef}
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Project showcase"
-          className="relative"
-          style={{ perspective: 1400 }}
-        >
-          <div className="min-h-[420px] sm:min-h-[380px]">
-            <AnimatePresence initial={false} custom={direction} mode="wait">
-              <motion.div
-                key={project.title}
-                custom={direction}
-                variants={reduce ? fadeVariants : slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                drag={reduce ? false : "x"}
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.12}
-                onDragEnd={(_, info) => {
-                  if (info.offset.x < -90) paginate(1);
-                  else if (info.offset.x > 90) paginate(-1);
-                }}
-                aria-label={`Project ${index + 1} of ${projects.length}`}
-                className="cursor-grab active:cursor-grabbing"
+    <Section
+      id="projects"
+      title="Projects"
+      note="Personal and university work. Open one for the details."
+      aside={switcher}
+    >
+      {view === "gallery" ? (
+        <div className="mx-auto grid max-w-[62rem] gap-4 sm:grid-cols-2">
+          {projects.map((project, i) => (
+            <Reveal key={project.title} delay={i * 0.05}>
+              <button
+                type="button"
+                onClick={() => setPeek(project)}
+                className="card group flex h-full w-full cursor-pointer flex-col overflow-hidden text-left transition-[box-shadow,transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-lift active:translate-y-0 active:scale-[0.995]"
               >
-                <SlideContent project={project} reduce={reduce} />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Controls */}
-          <div className="mt-5 flex items-center justify-center gap-6">
-            <button
-              onClick={() => paginate(-1)}
-              aria-label="Previous project"
-              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/10 text-slate-400 transition-colors duration-200 hover:border-accent/50 hover:text-accent"
-            >
-              <ArrowLeft size={18} />
-            </button>
-
-            <div className="flex items-center gap-2.5">
-              {projects.map((p, i) => (
-                <button
-                  key={p.title}
-                  onClick={() => setState([i, i > index ? 1 : -1])}
-                  aria-label={`Go to project ${i + 1}: ${p.title}`}
-                  aria-current={i === index ? "true" : undefined}
-                  className={`h-1 cursor-pointer rounded-full transition-all duration-300 ${
-                    i === index
-                      ? "w-8 bg-accent"
-                      : "w-4 bg-slate-700 hover:bg-slate-500"
-                  }`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={() => paginate(1)}
-              aria-label="Next project"
-              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/10 text-slate-400 transition-colors duration-200 hover:border-accent/50 hover:text-accent"
-            >
-              <ArrowRight size={18} />
-            </button>
-          </div>
-
-          <div className="mt-3 text-center font-mono text-xs text-slate-600">
-            {String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
-          </div>
+                <Cover project={project} />
+                <span className="flex flex-1 flex-col px-5 pb-5 pt-4">
+                  <span className="flex items-start justify-between gap-3">
+                    <span className="text-[1.25rem] font-semibold leading-snug tracking-[-0.025em] text-ink">
+                      {project.title}
+                    </span>
+                    <ArrowUpRight
+                      size={17}
+                      strokeWidth={2}
+                      aria-hidden
+                      className="mt-1 shrink-0 text-faint transition-[color,transform] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+                    />
+                  </span>
+                  <span className="mt-2 block text-[0.9375rem] leading-[1.55] text-muted">
+                    {project.summary}
+                  </span>
+                  <span className="mt-auto flex flex-wrap gap-1.5 pt-4">
+                    <Tag tone={project.tone}>{project.kind}</Tag>
+                    {project.stack.slice(0, 3).map((s) => (
+                      <Tag key={s}>{s}</Tag>
+                    ))}
+                  </span>
+                </span>
+              </button>
+            </Reveal>
+          ))}
         </div>
-      </Reveal>
+      ) : (
+        <Reveal className="card mx-auto max-w-[62rem] overflow-x-auto">
+          <table className="w-full min-w-[34rem] border-collapse text-left text-[0.9375rem]">
+            <thead>
+              <tr className="border-b border-rule text-sm text-faint">
+                <th scope="col" className="px-4 py-2.5 font-medium sm:px-5">
+                  Project
+                </th>
+                <th scope="col" className="px-4 py-2.5 font-medium">
+                  Type
+                </th>
+                <th scope="col" className="px-4 py-2.5 font-medium">
+                  Result
+                </th>
+                <th scope="col" className="hidden px-4 py-2.5 font-medium md:table-cell">
+                  Built with
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {projects.map((project) => (
+                <tr
+                  key={project.title}
+                  onClick={() => setPeek(project)}
+                  className="cursor-pointer border-b border-rule transition-colors duration-200 last:border-b-0 hover:bg-fill"
+                >
+                  <th scope="row" className="px-4 py-3.5 font-semibold text-ink sm:px-5">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPeek(project);
+                      }}
+                      className="cursor-pointer text-left"
+                    >
+                      {project.title}
+                    </button>
+                  </th>
+                  <td className="px-4 py-3.5">
+                    <Tag tone={project.tone}>{project.kind}</Tag>
+                  </td>
+                  <td className="px-4 py-3.5 text-muted">
+                    <span className="font-semibold tabular-nums text-ink">
+                      {project.metric.value}
+                    </span>{" "}
+                    {project.metric.label}
+                  </td>
+                  <td className="hidden px-4 py-3.5 text-muted md:table-cell">
+                    {project.stack.slice(0, 3).join(", ")}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Reveal>
+      )}
+
+      {createPortal(
+        <AnimatePresence>
+          {peek && <ProjectPeek project={peek} onClose={closePeek} />}
+        </AnimatePresence>,
+        document.body
+      )}
     </Section>
   );
 }

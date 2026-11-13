@@ -1,54 +1,88 @@
-import { Mail, Github, Linkedin, ArrowUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, ArrowUpRight, Check, Copy } from "lucide-react";
 import { profile } from "../data/portfolio";
-import { Reveal } from "../lib/motion";
+import { BlurIn, Reveal } from "../lib/motion";
+import HeroEmblem from "./HeroEmblem";
 
+/** The closing call to action, on the dark section. */
 export default function Contact() {
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const id = window.setTimeout(() => setCopied(false), 2200);
+    return () => window.clearTimeout(id);
+  }, [copied]);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+    } catch {
+      // Clipboard blocked: fall back to opening the mail client.
+      window.location.href = `mailto:${profile.email}`;
+    }
+  };
+
+  const links = [
+    { label: "GitHub", href: profile.socials.github },
+    { label: "LinkedIn", href: profile.socials.linkedin },
+    { label: "Résumé", href: profile.resumeUrl },
+  ];
+
   return (
-    <section
-      id="contact"
-      className="container-px scroll-mt-20 py-14 sm:py-20"
-    >
-      <Reveal className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-ink-900/60 px-6 py-16 text-center sm:px-12">
-        <div className="grid-bg absolute inset-0 -z-10 opacity-50" />
-        <div className="absolute left-1/2 top-0 -z-10 h-64 w-96 -translate-x-1/2 rounded-full bg-accent/10 blur-[120px]" />
+    <section id="contact" aria-labelledby="contact-title" className="scroll-mt-24 pb-20 pt-6 sm:pb-28">
+      <div className="container-page flex flex-col items-center text-center">
+        <HeroEmblem color="244,245,246" className="w-40 sm:w-52" />
 
-        <div className="section-label mb-4">// get_in_touch</div>
-        <h2 className="mx-auto max-w-2xl font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          Let's build something that{" "}
-          <span className="text-gradient">moves markets.</span>
-        </h2>
-        <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-slate-400">
-          I'm actively looking for quantitative and software engineering
-          internships. Whether it's trading research, infrastructure, or data,
-          I'd love to talk.
-        </p>
+        <BlurIn>
+          <h2 id="contact-title" className="display mt-4 text-[clamp(3.25rem,10vw,7rem)]">
+            Let's talk.
+          </h2>
+        </BlurIn>
 
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-          <a
-            href={`mailto:${profile.email}`}
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-ink-950 transition-all hover:bg-accent-soft"
-          >
-            <Mail size={16} />
-            {profile.email}
-          </a>
-          <a
-            href={profile.socials.github}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-3 text-sm text-slate-200 transition-all hover:border-accent/40 hover:text-accent"
-          >
-            <Github size={16} /> GitHub <ArrowUpRight size={14} />
-          </a>
-          <a
-            href={profile.socials.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-3 text-sm text-slate-200 transition-all hover:border-accent/40 hover:text-accent"
-          >
-            <Linkedin size={16} /> LinkedIn <ArrowUpRight size={14} />
-          </a>
-        </div>
-      </Reveal>
+        <Reveal className="flex flex-col items-center">
+          <p className="mt-6 max-w-[33rem] text-[1.0938rem] leading-[1.55] text-white/65 sm:text-[1.1875rem]">
+            I'm looking for software engineering and quant internships. Email is
+            the quickest way to reach me.
+          </p>
+
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+            <a href={`mailto:${profile.email}`} className="btn-accent">
+              Email me
+              <ArrowRight size={20} strokeWidth={2.2} aria-hidden />
+            </a>
+            <button
+              type="button"
+              onClick={copy}
+              className="inline-flex h-14 cursor-pointer items-center gap-2.5 rounded-[14px] border border-white/15 px-6 text-[1.0313rem] font-semibold text-white transition-[border-color,transform] duration-200 hover:border-white/40 active:scale-[0.98]"
+            >
+              {copied ? (
+                <Check size={17} strokeWidth={2.2} aria-hidden />
+              ) : (
+                <Copy size={16} strokeWidth={2} aria-hidden />
+              )}
+              <span aria-live="polite">{copied ? "Copied" : profile.email}</span>
+            </button>
+          </div>
+
+          <ul className="mt-10 flex flex-wrap justify-center gap-x-7 gap-y-2 text-[1rem] text-white/70">
+            {links.map((l) => (
+              <li key={l.label}>
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 py-1.5 transition-colors duration-200 hover:text-white"
+                >
+                  {l.label}
+                  <ArrowUpRight size={15} strokeWidth={1.8} aria-hidden />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </div>
     </section>
   );
 }

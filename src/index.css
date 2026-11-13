@@ -2,148 +2,319 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===========================================================================
+   Theme tokens.
+   A white page, near-black type set large and tight, one vivid accent that
+   picks up the teal of the entry splash, and a dark closing section.
+   Light is the default; the toggle in the nav sets <html data-theme="dark">.
+   =========================================================================== */
 @layer base {
   :root {
+    color-scheme: light;
+    --paper: 255 255 255;
+    --card: 255 255 255;
+    --fill: 245 245 246;
+    --ink: 10 11 13;
+    --muted: 86 90 99;
+    --faint: 108 113 123;
+    --accent: 0 200 165;
+    --accent-ink: 0 120 99;
+    --accent-display: 0 158 130;
+    --on-accent: 3 28 24;
+    --deep: 5 19 22;
+    --rule-alpha: 0.1;
+    --glow-core: 255 247 222 / 0.95;
+    --glow-alpha: 0.58;
+    --shadow-lift: 0 18px 44px -18px rgb(10 11 13 / 0.22);
+    --shadow-capsule: 0 12px 40px -12px rgb(10 11 13 / 0.2),
+      0 2px 6px rgb(10 11 13 / 0.05);
+  }
+
+  :root[data-theme="dark"] {
     color-scheme: dark;
+    --paper: 10 11 13;
+    --card: 18 19 22;
+    --fill: 26 28 32;
+    --ink: 244 245 246;
+    --muted: 160 165 173;
+    --faint: 126 131 140;
+    --accent: 25 214 178;
+    --accent-ink: 72 228 197;
+    --accent-display: 25 214 178;
+    --on-accent: 3 28 24;
+    --deep: 5 19 22;
+    --rule-alpha: 0.13;
+    --glow-core: 25 214 178 / 0.12;
+    --glow-alpha: 0.26;
+    --shadow-lift: 0 18px 44px -18px rgb(0 0 0 / 0.7);
+    --shadow-capsule: 0 12px 40px -12px rgb(0 0 0 / 0.7);
   }
 
   html {
     scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    /* Hide scrollbar (Firefox) while keeping scroll functional */
-    scrollbar-width: none;
-    /* Hide scrollbar (IE / legacy Edge) */
-    -ms-overflow-style: none;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-ink-950 text-slate-300 font-sans antialiased;
-    /* Guard against any element causing sideways scroll */
+    @apply bg-paper font-sans text-ink antialiased;
+    font-size: 1rem;
+    line-height: 1.55;
     overflow-x: hidden;
   }
 
+  /* Until the entry splash hands off, the page behind it stays black so the
+     splash never flashes against the page colour. Cleared in App.tsx. */
+  html.booting,
+  html.booting body {
+    background: #000;
+  }
+
   ::selection {
-    @apply bg-accent/30 text-white;
+    background: rgb(var(--accent) / 0.3);
   }
 
-  /* Visible focus for keyboard users only */
   :focus-visible {
-    outline: 2px solid rgba(94, 234, 212, 0.7);
+    outline: 2px solid rgb(var(--accent-ink));
     outline-offset: 3px;
-    border-radius: 4px;
+    border-radius: 6px;
   }
 
-  /* Hide scrollbars (WebKit / Chrome / Safari) — scroll stays functional */
-  ::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    display: none;
+  /* Smooths the light/dark switch; added for one beat by the theme toggle. */
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after {
+    transition: background-color 0.3s ease, color 0.3s ease,
+      border-color 0.3s ease !important;
   }
 }
 
 @layer components {
-  .container-px {
-    @apply mx-auto w-full max-w-6xl px-6 sm:px-8;
+  .container-page {
+    @apply mx-auto w-full max-w-[1180px] px-5 sm:px-8;
   }
 
-  .section-label {
-    @apply font-mono text-xs uppercase tracking-[0.25em] text-accent;
+  /* Display type: large, semibold, tracked tight. */
+  .display {
+    @apply font-semibold;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
   }
 
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+  /* Dot-matrix numerals for results. */
+  .numeral {
+    font-family: "Doto", "Geist Mono", monospace;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
   }
 
-}
-
-@layer utilities {
-  .text-gradient {
-    @apply bg-gradient-to-r from-accent-soft via-accent to-accent-glow bg-clip-text text-transparent;
+  /* Small uppercase label, used on chips and card headers. */
+  .label {
+    @apply font-mono text-[0.6875rem] font-medium uppercase;
+    letter-spacing: 0.09em;
   }
-  .grid-bg {
-    background-image: linear-gradient(rgba(94, 234, 212, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(94, 234, 212, 0.04) 1px, transparent 1px);
-    background-size: 48px 48px;
+
+  .u-link {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    text-decoration-color: currentColor;
+    transition: opacity 0.2s ease;
+  }
+  .u-link:hover {
+    opacity: 0.7;
+  }
+
+  /* Black pill with an arrow badge. */
+  .btn-pill {
+    @apply inline-flex h-11 cursor-pointer items-center gap-2.5 rounded-full pl-5 pr-1.5 text-[0.9375rem] font-semibold;
+    background: rgb(var(--ink));
+    color: rgb(var(--paper));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22),
+      0 8px 18px -8px rgb(10 11 13 / 0.55);
+    transition: transform 0.14s ease-out, opacity 0.2s ease;
+    touch-action: manipulation;
+  }
+  .btn-pill:active {
+    transform: scale(0.97);
+  }
+  .btn-pill .badge {
+    @apply flex h-8 w-8 items-center justify-center rounded-full;
+    background: rgb(var(--paper) / 0.16);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .btn-pill:hover .badge {
+    transform: translateX(2px);
+  }
+
+  /* The one loud button. */
+  .btn-accent {
+    @apply inline-flex h-14 cursor-pointer items-center justify-center gap-3 rounded-[14px] px-8 text-lg font-semibold;
+    background: rgb(var(--accent));
+    color: rgb(var(--on-accent));
+    box-shadow: 0 16px 36px -12px rgb(var(--accent) / 0.75),
+      inset 0 1px 0 rgb(255 255 255 / 0.4);
+    transition: transform 0.16s ease-out, filter 0.2s ease;
+    touch-action: manipulation;
+  }
+  .btn-accent:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+  }
+  .btn-accent:active {
+    transform: scale(0.98);
+  }
+
+  .btn-ghost {
+    @apply inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-full border border-rule px-5 text-[0.9375rem] font-semibold text-ink;
+    transition: border-color 0.2s ease, background-color 0.2s ease,
+      transform 0.14s ease-out;
+    touch-action: manipulation;
+  }
+  .btn-ghost:hover {
+    border-color: rgb(var(--ink) / 0.35);
+  }
+  .btn-ghost:active {
+    transform: scale(0.97);
+  }
+
+  .card {
+    @apply rounded-[20px] border border-rule bg-card;
   }
 }
 
 /* ===========================================================================
-   Ambient background: drifting aurora light + film grain
+   Hero glow: a warm core inside a wide wash of the accent, at the top edge.
    =========================================================================== */
-.aurora {
+.hero-glow {
   position: absolute;
-  border-radius: 9999px;
-  filter: blur(110px);
-  will-change: transform, opacity;
-}
-
-.aurora-1 {
-  width: 48rem;
-  height: 48rem;
-  left: -14rem;
-  top: -16rem;
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.45), transparent 68%);
-  animation: drift-1 26s ease-in-out infinite;
-}
-.aurora-2 {
-  width: 42rem;
-  height: 42rem;
-  right: -14rem;
-  top: 2rem;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.38), transparent 68%);
-  animation: drift-2 32s ease-in-out infinite;
-}
-.aurora-3 {
-  width: 40rem;
+  inset: 0 0 auto 0;
   height: 40rem;
-  left: 18%;
-  bottom: -18rem;
-  background: radial-gradient(circle, rgba(251, 191, 36, 0.2), transparent 70%);
-  animation: drift-3 38s ease-in-out infinite;
-}
-.aurora-4 {
-  width: 34rem;
-  height: 34rem;
-  right: 12%;
-  bottom: 8rem;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.28), transparent 70%);
-  animation: drift-4 28s ease-in-out infinite;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 32% 44% at 50% 0%, rgb(var(--glow-core)) 0%, transparent 100%),
+    radial-gradient(ellipse 60% 66% at 50% -8%, rgb(var(--accent) / var(--glow-alpha)) 0%, transparent 100%);
 }
 
-@keyframes drift-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(8rem, 5rem) scale(1.12); }
+/* ===========================================================================
+   The dark closing section rises over the page as a glowing horizon.
+   =========================================================================== */
+.deep {
+  position: relative;
+  background: rgb(var(--deep));
+  color: #f4f5f6;
 }
-@keyframes drift-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-7rem, 6rem) scale(1.08); }
+.deep :focus-visible {
+  outline-color: rgb(var(--accent));
 }
-@keyframes drift-3 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(6rem, -5rem) scale(1.15); }
+.deep-horizon {
+  position: relative;
+  height: 9rem;
+  overflow: hidden;
 }
-@keyframes drift-4 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-5rem, -6rem) scale(1.1); }
+.deep-horizon::before {
+  content: "";
+  position: absolute;
+  left: -15%;
+  right: -15%;
+  top: 2.5rem;
+  height: 30rem;
+  border-radius: 50%;
+  background: rgb(var(--deep));
+  box-shadow: 0 -4px 0 0 rgb(var(--accent)),
+    0 -18px 60px 6px rgb(var(--accent) / 0.7),
+    0 -50px 120px 20px rgb(var(--accent) / 0.3);
 }
 
-.grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 160px 160px;
+/* ===========================================================================
+   Marquee: two copies of a track sliding by one track-width.
+   =========================================================================== */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
+.marquee-track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 1rem;
+  padding-right: 1rem;
+  animation: marquee var(--marquee-duration, 70s) linear infinite;
+}
+.marquee[data-reverse="true"] .marquee-track {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* ===========================================================================
+   Tags. One shape, a handful of tones; each tone has a light and a dark pair.
+   =========================================================================== */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  background: rgb(var(--t-bg));
+  color: rgb(var(--t-fg));
+}
+.tag-wrap {
+  white-space: normal;
+}
+
+.tone-gray   { --t-bg: 240 240 241; --t-fg: 62 65 72; }
+.tone-blue   { --t-bg: 222 235 250; --t-fg: 24 70 122; }
+.tone-green  { --t-bg: 216 244 232; --t-fg: 12 92 62; }
+.tone-pink   { --t-bg: 252 226 238; --t-fg: 128 34 82; }
+.tone-amber  { --t-bg: 253 238 204; --t-fg: 116 72 6; }
+.tone-purple { --t-bg: 236 229 252; --t-fg: 84 48 142; }
+.tone-teal   { --t-bg: 208 244 236; --t-fg: 4 96 80; }
+
+:root[data-theme="dark"] .tone-gray   { --t-bg: 34 36 42;  --t-fg: 190 194 202; }
+:root[data-theme="dark"] .tone-blue   { --t-bg: 22 44 78;  --t-fg: 156 200 252; }
+:root[data-theme="dark"] .tone-green  { --t-bg: 16 54 42;  --t-fg: 126 232 180; }
+:root[data-theme="dark"] .tone-pink   { --t-bg: 70 28 54;  --t-fg: 250 176 212; }
+:root[data-theme="dark"] .tone-amber  { --t-bg: 66 48 16;  --t-fg: 246 206 122; }
+:root[data-theme="dark"] .tone-purple { --t-bg: 48 36 88;  --t-fg: 204 186 254; }
+:root[data-theme="dark"] .tone-teal   { --t-bg: 10 56 52;  --t-fg: 110 236 208; }
 
 @media (prefers-reduced-motion: reduce) {
-  .aurora-1, .aurora-2, .aurora-3, .aurora-4 {
-    animation: none;
-  }
   html {
     scroll-behavior: auto;
+  }
+  .marquee {
+    overflow-x: auto;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  .marquee-track[aria-hidden="true"] {
+    display: none;
+  }
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after {
+    transition: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --rule-alpha: 0.4;
   }
 }

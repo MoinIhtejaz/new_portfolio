@@ -1,219 +1,143 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useReducedMotion,
-} from "framer-motion";
-import { ArrowRight, Github, Linkedin, MapPin, FileDown } from "lucide-react";
-import { profile, heroRoles } from "../data/portfolio";
+import type { ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, GraduationCap } from "lucide-react";
+import { competitions, education, profile } from "../data/portfolio";
+import { getCompetitionLogo } from "../lib/competitionLogo";
+import { EASE } from "../lib/motion";
 
-// Skills shown in the scrolling ribbon. `core` items are highlighted.
-const marqueeSkills: { label: string; core?: boolean }[] = [
-  { label: "Java", core: true },
-  { label: "Python", core: true },
-  { label: "C++", core: true },
-  { label: "C" },
-  { label: "TypeScript", core: true },
-  { label: "JavaScript" },
-  { label: "SQL" },
-  { label: "R" },
-  { label: "React", core: true },
-  { label: "Node.js" },
-  { label: "Tailwind" },
-  { label: "PostgreSQL", core: true },
-  { label: "Supabase" },
-  { label: "REST APIs" },
-  { label: "Docker", core: true },
-  { label: "Kubernetes" },
-  { label: "Linux" },
-  { label: "CI/CD" },
-  { label: "Vercel" },
-  { label: "Concurrency", core: true },
-  { label: "Distributed Computing" },
-  { label: "NumPy" },
-  { label: "Pandas", core: true },
-  { label: "XGBoost" },
-  { label: "Pytest" },
-];
+// The splash is still fading out when the page mounts, so the hero waits a
+// beat before its own entrance.
+const START = 0.25;
 
-const EASE = [0.16, 1, 0.3, 1] as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 24, filter: "blur(8px)" },
-  show: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.75, ease: EASE },
-  },
-};
-
-function MarqueeTrack({ ariaHidden = false }: { ariaHidden?: boolean }) {
+function Badge({
+  icon,
+  label,
+  value,
+}: {
+  icon: ReactNode;
+  label: string;
+  value: string;
+}) {
   return (
-    <div
-      className="flex shrink-0 animate-marquee items-center gap-7 pr-7"
-      aria-hidden={ariaHidden}
-    >
-      {[...marqueeSkills, ...marqueeSkills].map((s, i) => (
-        <span key={i} className="flex items-center gap-7 whitespace-nowrap">
-          <span
-            className={`font-mono text-sm uppercase tracking-widest transition-colors ${
-              s.core
-                ? "text-accent [text-shadow:0_0_18px_rgba(45,212,191,0.45)]"
-                : "text-slate-600"
-            }`}
-          >
-            {s.label}
-          </span>
-          <span className="text-slate-700">/</span>
+    <div className="flex items-center gap-3 rounded-2xl border border-accent-ink/35 bg-card/70 py-2 pl-2.5 pr-5 text-left backdrop-blur-sm">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-fill text-accent-ink">
+        {icon}
+      </span>
+      <span>
+        <span className="label block text-accent-ink">{label}</span>
+        <span className="block text-[1.0313rem] font-semibold leading-tight tracking-[-0.02em] text-ink">
+          {value}
         </span>
-      ))}
+      </span>
     </div>
   );
 }
 
 export default function Hero() {
-  const [idx, setIdx] = useState(0);
   const reduce = useReducedMotion();
-  const ref = useRef<HTMLElement>(null);
 
-  // Hero content gently lifts and fades as it scrolls away.
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
+  const rise = (delay: number) => ({
+    initial: reduce ? { opacity: 0 } : { opacity: 0, y: 18, filter: "blur(10px)" },
+    animate: reduce ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" },
+    transition: { duration: 0.9, ease: EASE, delay: START + delay },
   });
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 90]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
-  useEffect(() => {
-    const t = setInterval(() => setIdx((i) => (i + 1) % heroRoles.length), 2600);
-    return () => clearInterval(t);
-  }, []);
+  // The two trading competitions lead the badges; the scholarship follows.
+  const badges = competitions
+    .filter((c) => c.result)
+    .map((c) => ({
+      label: c.tab,
+      value: c.result as string,
+      logo: c.logoKey ? getCompetitionLogo(c.logoKey) : null,
+      alt: c.logoAlt ?? c.organisation,
+    }));
+
+  const terminal = competitions.find((c) => c.demo?.video)?.demo;
 
   return (
-    <section
-      ref={ref}
-      id="top"
-      className="relative overflow-hidden pt-36 pb-16 sm:pt-44"
-    >
-      <motion.div
-        style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
-        className="container-px"
-      >
-        <motion.div
-          initial="hidden"
-          animate="show"
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
-          }}
-          className="max-w-3xl"
+    <section id="top" className="relative isolate overflow-hidden pb-10 pt-32 sm:pt-40">
+      <div className="hero-glow" aria-hidden />
+
+      <div className="container-page flex flex-col items-center text-center">
+        <motion.h1
+          {...rise(0)}
+          className="display text-[clamp(2.9rem,8.2vw,6.25rem)]"
         >
-          <motion.div
-            variants={itemVariants}
-            className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-1.5 backdrop-blur-sm"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+          {profile.headline.map((line) => (
+            <span key={line} className="block">
+              {line}
             </span>
-            <span className="font-mono text-xs text-slate-400">
-              {profile.availability}
-            </span>
-          </motion.div>
+          ))}
+        </motion.h1>
 
-          <motion.h1
-            variants={itemVariants}
-            className="text-balance font-display text-5xl font-bold leading-[1.02] tracking-tight text-white sm:text-7xl"
-          >
-            {profile.name}
-          </motion.h1>
+        <motion.p
+          {...rise(0.1)}
+          className="mt-7 max-w-[36rem] text-[1.0938rem] leading-[1.55] text-muted sm:text-[1.1875rem]"
+        >
+          {profile.blurb}
+        </motion.p>
 
-          <motion.div
-            variants={itemVariants}
-            className="mt-5 flex h-8 items-center font-mono text-lg text-accent sm:text-xl"
-          >
-            <span className="mr-2 text-slate-600">~/</span>
-            <span key={idx} className="animate-fade-up">
-              {heroRoles[idx]}
-            </span>
-            <span className="ml-1 inline-block h-5 w-2 animate-pulse-slow bg-accent" />
-          </motion.div>
-
-          <motion.p
-            variants={itemVariants}
-            className="mt-7 max-w-2xl text-pretty text-base leading-relaxed text-slate-400 sm:text-lg"
-          >
-            {profile.summary}
-          </motion.p>
-
-          <motion.div
-            variants={itemVariants}
-            className="mt-9 flex flex-wrap items-center gap-4"
-          >
-            <motion.a
-              href="#projects"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              className="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-accent py-2 pl-6 pr-2 text-sm font-semibold text-ink-950 shadow-[0_0_30px_-6px_rgba(45,212,191,0.5)] transition-colors hover:bg-accent-soft"
-            >
-              View Projects
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink-950/15 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px group-hover:translate-x-0.5">
-                <ArrowRight size={15} />
-              </span>
-            </motion.a>
-            <motion.a
-              href={profile.resumeUrl}
-              target="_blank"
-              rel="noreferrer"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/10 px-6 py-3 text-sm font-medium text-slate-200 backdrop-blur-sm transition-colors hover:border-accent/40 hover:text-accent"
-            >
-              <FileDown size={16} />
-              Download Résumé
-            </motion.a>
-
-            <div className="flex items-center gap-1 sm:ml-2">
-              <a
-                href={profile.socials.github}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="GitHub"
-                className="rounded-full p-2.5 text-slate-400 transition-colors hover:bg-white/5 hover:text-accent"
-              >
-                <Github size={20} />
-              </a>
-              <a
-                href={profile.socials.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-                className="rounded-full p-2.5 text-slate-400 transition-colors hover:bg-white/5 hover:text-accent"
-              >
-                <Linkedin size={20} />
-              </a>
-            </div>
-          </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="mt-6 flex items-center gap-2 font-mono text-xs text-slate-500"
-          >
-            <MapPin size={13} /> {profile.location}
-          </motion.div>
+        <motion.div {...rise(0.2)} className="mt-9">
+          <a href={`mailto:${profile.email}`} className="btn-accent">
+            Get in touch
+            <ArrowRight size={20} strokeWidth={2.2} aria-hidden />
+          </a>
         </motion.div>
-      </motion.div>
 
-      {/* Skills ribbon */}
-      <div className="relative mt-20 border-y border-white/[0.06] bg-white/[0.015] py-5 backdrop-blur-sm">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-28 bg-gradient-to-r from-ink-950 to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-28 bg-gradient-to-l from-ink-950 to-transparent" />
-        <div className="flex overflow-hidden">
-          <MarqueeTrack />
-          <MarqueeTrack ariaHidden />
-        </div>
+        <motion.div
+          {...rise(0.3)}
+          className="mt-8 flex flex-wrap items-stretch justify-center gap-3"
+        >
+          {badges.map((b) => (
+            <Badge
+              key={b.label}
+              label={b.label}
+              value={b.value}
+              icon={
+                b.logo ? (
+                  <img src={b.logo} alt={b.alt} className="h-full w-full object-cover" />
+                ) : (
+                  <span className="text-sm font-semibold">{b.label.slice(0, 2)}</span>
+                )
+              }
+            />
+          ))}
+          <Badge
+            label="University of Sydney"
+            value={education.honors[0].name}
+            icon={<GraduationCap size={21} strokeWidth={1.8} aria-hidden />}
+          />
+        </motion.div>
+
+        {/* The monitoring terminal built for the Algothon, running. */}
+        {terminal?.video && (
+          <motion.figure
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 36, scale: 0.97 }}
+            animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.1, ease: EASE, delay: START + 0.42 }}
+            className="mt-14 w-full max-w-[60rem] sm:mt-16"
+          >
+            <div className="relative overflow-hidden rounded-[22px] border border-rule bg-black shadow-[0_50px_110px_-40px_rgb(var(--accent)/0.75),0_24px_50px_-28px_rgb(10_11_13/0.5)] sm:rounded-[30px]">
+              <video
+                src={terminal.video}
+                poster={terminal.poster}
+                autoPlay={!reduce}
+                controls={reduce ?? false}
+                muted
+                loop
+                playsInline
+                aria-label={terminal.caption}
+                className="block aspect-[15/8] w-full object-cover"
+              />
+              <span className="label pointer-events-none absolute bottom-3 left-3 rounded-full bg-black/70 px-3 py-1.5 text-white backdrop-blur-sm sm:bottom-4 sm:left-4">
+                Monitoring terminal
+              </span>
+            </div>
+            <figcaption className="mt-4 text-[0.9375rem] text-muted">
+              {terminal.caption}
+            </figcaption>
+          </motion.figure>
+        )}
       </div>
     </section>
   );

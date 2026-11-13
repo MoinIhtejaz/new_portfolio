@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="booting">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Maheer Ihtejaz Moin: Advanced Computing (Honours) student at the University of Sydney. Full-stack and systems engineering, from Postgres schemas and access control through deployment, plus low-latency trading systems and machine learning."
+      content="Maheer Ihtejaz Moin is a software engineer in Sydney studying Advanced Computing (Honours) at the University of Sydney. Full-stack and systems engineering, algorithmic trading competitions, and quantitative modelling."
     />
     <meta name="author" content="Maheer Ihtejaz Moin" />
     <meta
@@ -15,13 +15,25 @@
     />
     <meta
       property="og:description"
-      content="Full-stack and systems engineering, backed by quantitative modelling. Computational Data Science &amp; Finance @ USyd."
+      content="Software engineer in Sydney. Sole developer on a company's first online sales platform, team lead at IMC AlgoJam and the SIG Algothon, Advanced Computing (Honours) at the University of Sydney."
     />
     <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#ffffff" />
+    <script>
+      // Pick the theme before first paint so there is no flash. The site is
+      // light unless the visitor has chosen dark with the toggle.
+      (function () {
+        var theme = "light";
+        try {
+          if (localStorage.getItem("theme") === "dark") theme = "dark";
+        } catch (e) {}
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Doto:wght@700..900&family=Space+Grotesk:wght@700&display=swap"
       rel="stylesheet"
     />
     <title>Maheer Ihtejaz Moin · Software Engineer</title>
