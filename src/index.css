@@ -4,33 +4,12 @@
 
 /* ===========================================================================
    Theme tokens.
-   A white page, near-black type set large and tight, one vivid accent that
-   picks up the teal of the entry splash, and a dark closing section.
-   Light is the default; the toggle in the nav sets <html data-theme="dark">.
+   A near-black page, light type set large and tight, one vivid accent that
+   picks up the teal of the entry splash, and a deeper closing section.
+   The site is dark only.
    =========================================================================== */
 @layer base {
   :root {
-    color-scheme: light;
-    --paper: 255 255 255;
-    --card: 255 255 255;
-    --fill: 245 245 246;
-    --ink: 10 11 13;
-    --muted: 86 90 99;
-    --faint: 108 113 123;
-    --accent: 0 200 165;
-    --accent-ink: 0 120 99;
-    --accent-display: 0 158 130;
-    --on-accent: 3 28 24;
-    --deep: 5 19 22;
-    --rule-alpha: 0.1;
-    --glow-core: 255 247 222 / 0.95;
-    --glow-alpha: 0.58;
-    --shadow-lift: 0 18px 44px -18px rgb(10 11 13 / 0.22);
-    --shadow-capsule: 0 12px 40px -12px rgb(10 11 13 / 0.2),
-      0 2px 6px rgb(10 11 13 / 0.05);
-  }
-
-  :root[data-theme="dark"] {
     color-scheme: dark;
     --paper: 10 11 13;
     --card: 18 19 22;
@@ -79,13 +58,6 @@
     border-radius: 6px;
   }
 
-  /* Smooths the light/dark switch; added for one beat by the theme toggle. */
-  html.theme-switching *,
-  html.theme-switching *::before,
-  html.theme-switching *::after {
-    transition: background-color 0.3s ease, color 0.3s ease,
-      border-color 0.3s ease !important;
-  }
 }
 
 @layer components {
@@ -258,7 +230,7 @@
 }
 
 /* ===========================================================================
-   Tags. One shape, a handful of tones; each tone has a light and a dark pair.
+   Tags. One shape, a handful of tones.
    =========================================================================== */
 .tag {
   display: inline-flex;
@@ -277,21 +249,13 @@
   white-space: normal;
 }
 
-.tone-gray   { --t-bg: 240 240 241; --t-fg: 62 65 72; }
-.tone-blue   { --t-bg: 222 235 250; --t-fg: 24 70 122; }
-.tone-green  { --t-bg: 216 244 232; --t-fg: 12 92 62; }
-.tone-pink   { --t-bg: 252 226 238; --t-fg: 128 34 82; }
-.tone-amber  { --t-bg: 253 238 204; --t-fg: 116 72 6; }
-.tone-purple { --t-bg: 236 229 252; --t-fg: 84 48 142; }
-.tone-teal   { --t-bg: 208 244 236; --t-fg: 4 96 80; }
-
-:root[data-theme="dark"] .tone-gray   { --t-bg: 34 36 42;  --t-fg: 190 194 202; }
-:root[data-theme="dark"] .tone-blue   { --t-bg: 22 44 78;  --t-fg: 156 200 252; }
-:root[data-theme="dark"] .tone-green  { --t-bg: 16 54 42;  --t-fg: 126 232 180; }
-:root[data-theme="dark"] .tone-pink   { --t-bg: 70 28 54;  --t-fg: 250 176 212; }
-:root[data-theme="dark"] .tone-amber  { --t-bg: 66 48 16;  --t-fg: 246 206 122; }
-:root[data-theme="dark"] .tone-purple { --t-bg: 48 36 88;  --t-fg: 204 186 254; }
-:root[data-theme="dark"] .tone-teal   { --t-bg: 10 56 52;  --t-fg: 110 236 208; }
+.tone-gray   { --t-bg: 34 36 42;  --t-fg: 190 194 202; }
+.tone-blue   { --t-bg: 22 44 78;  --t-fg: 156 200 252; }
+.tone-green  { --t-bg: 16 54 42;  --t-fg: 126 232 180; }
+.tone-pink   { --t-bg: 70 28 54;  --t-fg: 250 176 212; }
+.tone-amber  { --t-bg: 66 48 16;  --t-fg: 246 206 122; }
+.tone-purple { --t-bg: 48 36 88;  --t-fg: 204 186 254; }
+.tone-teal   { --t-bg: 10 56 52;  --t-fg: 110 236 208; }
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -305,11 +269,6 @@
   }
   .marquee-track[aria-hidden="true"] {
     display: none;
-  }
-  html.theme-switching *,
-  html.theme-switching *::before,
-  html.theme-switching *::after {
-    transition: none !important;
   }
 }
 

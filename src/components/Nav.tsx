@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { profile } from "../data/portfolio";
 import EmblemMark from "./EmblemMark";
-import ThemeToggle from "./ThemeToggle";
 
 const links = [
   { id: "experience", label: "Work" },
@@ -80,7 +79,6 @@ export default function Nav() {
         </div>
 
         <div className="flex items-center gap-1">
-          <ThemeToggle />
           <a
             href={profile.resumeUrl}
             target="_blank"

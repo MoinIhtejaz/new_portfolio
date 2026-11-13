@@ -3,7 +3,7 @@
 A fast, responsive personal portfolio built with **Vite + React + TypeScript + Tailwind CSS**.
 Designed for quant (Jane Street, Optiver) and big-tech (Amazon, Atlassian, Google, Meta) applications.
 
-The look: a white page with large, tight headlines, one vivid teal accent, dot-matrix numerals for results, a floating pill nav and a dark closing section (tokens in `src/index.css`; a dark theme is available from the toggle). Geist for text, Doto for numerals. Page order: hero, results wall, the story (job, competitions, degree), each step with its headline pinned beside the detail card, projects, skills, contact. The entry splash lives in `src/components/CtosIntro.tsx`.
+The look: a dark page with large, tight headlines, one vivid teal accent, dot-matrix numerals for results, a floating pill nav and a dark closing section (tokens in `src/index.css`). Geist for text, Doto for numerals. Page order: hero, results wall, the story (job, competitions, degree), each step with its headline pinned beside the detail card, projects, skills, contact. The entry splash lives in `src/components/CtosIntro.tsx`.
 
 ## Develop
 
